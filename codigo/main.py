@@ -20,7 +20,7 @@ if (resp=="1"):
         count=0
         for i in dados:
             dadoslist=dados[count].split(";")
-            print(dadoslist)
+            
             if (dadoslist[0]==cod_est):
                 print("Código de estação já existe, por favor insira outro")
             else:
@@ -47,16 +47,16 @@ if (resp=="2"):
         ficheiro= open("tabela_carril.txt","r")
         dados=ficheiro.readlines()
         ficheiro.close()
-       
+        
         count=0
         for i in dados:
             dadoslist=dados[count].split(";")
-            print("entrei no for")
+            
             
             if (dadoslist[0]==cod_car):
                 print("Código de carril já existe, por favor insira outro")
             else:
-                print("entrei no else")
+                
                 check=True
             count=count+1
 
@@ -68,7 +68,7 @@ if (resp=="2"):
 
         estB= input("Por favor insira o nome da outra estação ligada por este carril: ")
 
-        ficheiro= open("tabela_carril.txt","r")
+        ficheiro= open("tabela_estacoes.txt","r")
         dados=ficheiro.readlines()
         ficheiro.close()
        
@@ -76,20 +76,27 @@ if (resp=="2"):
         estcheck=0
         for i in dados:
             dadoslist=dados[count].split(";")
-            print(dadoslist)
-            if (dadoslist[1]==estA or dadoslist[2]==estA or dadoslist[1]==estB or dadoslist[2]==estB  ):
+            print(dadoslist[0])
+            print(estcheck)
+            print(check)
+
+            if (dadoslist[0]==estA or dadoslist[0]==estB):
                 estcheck=estcheck+1
+              
 
-            else:
-                check=True
+            
+                
             count=count+1
+           
 
-            if estcheck==2:
+            if estcheck>=2:
                 check=True
+                
+            else:
+                print("Uma das estações não existe. Certifique-se que essa é criada antes de criar um carril")
 
+    dist= float(input("Por favor insira a distancia entre as estações: "))
 
-    lati= float(input("Por favor insira a Latitude da estação: "))
+    maxvel=float(input("Por favor insira a velocidade maxima entre as estações: "))
 
-    longi=float(input("Por favor insira a longitude da estação: "))
-
-    #my_functions.estacao(cod_est,nome_est,lati,longi)
+    my_functions.carril(cod_car,estA,estB,dist,maxvel)

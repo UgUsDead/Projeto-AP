@@ -1,2 +1,4 @@
 TRIN;Trindade;0.0;0.0
 PCAM;Porto Campanha;1.0;1.0
+BOLH;Bolhao;2.0;2.0
+FANZ;Fanzeres;3.0;3.0
