@@ -251,5 +251,4 @@ if (resp=="4"):
 
     my_functions.linha(codlinha,nomelinha,ests,tiposervico)
 
-                
-
+#Tratar de criar uma viagem a seguir. depende de linha e comboio
