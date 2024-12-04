@@ -1,4 +1,5 @@
 import os.path
+
 # Função d tabela da estação, entra na tabela de estações e introduz todos os dados na tabela
 def estacao(cod_est,nome,lati,longi):
     pathest = os.path.realpath(__file__)
