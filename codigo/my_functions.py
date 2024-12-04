@@ -12,7 +12,7 @@ def estacao(cod_est,nome,lati,longi):
     lati=str(lati)
     longi=str(longi)
     textoest= cod_est + ";" + nome + ";" + lati + ";" + longi + "\n"
-    myEstacoes = tabela_estacoes.writelines( textoest )
+    tabela_estacoes.writelines( textoest )
     tabela_estacoes.close()
 
 
@@ -30,8 +30,10 @@ def carril(cod_carr,esta,estb,dist,velmaxperm):
     dist=str(dist)
     velmaxperm= str (velmaxperm)
     textocarr= cod_carr + ";" + esta + ";" + estb + ";" + dist + ";" + velmaxperm + "\n"
-    myCarris = tabela_carril.writelines( textocarr )
+    tabela_carril.writelines( textocarr )
     tabela_carril.close()
+
+#tabela do comboio
 
 def comboio(cod_comb,modelocomb,velocidadecomb,capacidadecomb,tiposervico):
     pathcarr = os.path.realpath(__file__)
@@ -46,10 +48,26 @@ def comboio(cod_comb,modelocomb,velocidadecomb,capacidadecomb,tiposervico):
     
     tiposervico= str (tiposervico)
     textocarr= cod_comb + ";" + modelocomb + ";" + velocidadecomb + ";" + capacidadecomb + ";" + tiposervico + "\n"
-    myCarris = tabela_comboios.writelines( textocarr )
+    tabela_comboios.writelines( textocarr )
     tabela_comboios.close()
 
-    
+#Tabela das linhas
+
+def linha(codlinh, nomelinh, ests,servi):
+    pathcarr = os.path.realpath(__file__)
+    dir=os.path.dirname(pathcarr)
+    dir= dir.replace("codigo","dados")
+    os.chdir(dir)
+    tabela_comboios = open ("tabela_linhas.txt", "a")
+    codlinh=str(codlinh)
+    nomelinh=str(nomelinh)
+    ests=str(ests)
+    servi=str(servi)
+    textolinha= codlinh + ";" + nomelinh + ";" + ests + ";" + servi + "\n"
+    tabela_comboios.writelines( textolinha )
+    tabela_comboios.close()
+
+
 
 
 
