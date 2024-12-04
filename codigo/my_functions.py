@@ -33,6 +33,21 @@ def carril(cod_carr,esta,estb,dist,velmaxperm):
     myCarris = tabela_carril.writelines( textocarr )
     tabela_carril.close()
 
+def comboio(cod_comb,modelocomb,velocidadecomb,capacidadecomb,tiposervico):
+    pathcarr = os.path.realpath(__file__)
+    dir=os.path.dirname(pathcarr)
+    dir= dir.replace("codigo","dados")
+    os.chdir(dir)
+    tabela_comboios = open ("tabela_comboios.txt", "a")
+    cod_comb=str(cod_comb)
+    modelocomb=str(modelocomb)
+    velocidadecomb=str(velocidadecomb)
+    capacidadecomb=str(capacidadecomb)
+    
+    tiposervico= str (tiposervico)
+    textocarr= cod_comb + ";" + modelocomb + ";" + velocidadecomb + ";" + capacidadecomb + ";" + tiposervico + "\n"
+    myCarris = tabela_comboios.writelines( textocarr )
+    tabela_comboios.close()
 
     
 
