@@ -1,254 +1,138 @@
 import my_functions
-from pathlib import Path
 import os
+
+# Defini funcoes iniciais de maneira a que o codigo fique mais limpo pois podes chamar apenas uma vez a funcao e nao ter de repetir o codigo
+def obter_diretorio_dados():
+    #Mostrar aonde estao guardados
+    path = os.path.realpath(__file__)
+    return os.path.join(os.path.dirname(path).replace('codigo', 'dados'))
+
+def ler_arquivo(nome_arquivo):
+    #Ler os dados do ficheiro
+    dir_dados = obter_diretorio_dados()
+    caminho_arquivo = os.path.join(dir_dados, nome_arquivo)
+    f = open(caminho_arquivo, "r")
+    linhas = [linha.strip().split(";") for linha in f.readlines()]
+    f.close()
+    return linhas
+
+def verificar_codigo_unico(nome_arquivo, codigo, indice=0):
+    #Verificação se é unico
+    dados = ler_arquivo(nome_arquivo)
+    return all(linha[indice] != codigo for linha in dados)
+
+# Menu inicial da CP os comboios que nunca se atrazam
 print("Bem vindo à CP!! \n\n 1-Adicionar estação \n\n 2-Adicionar carril \n\n 3-Adicionar Comboio \n\n 4- Adicionar Linha\n\n 5-Adicionar Viagem \n\n 6-Reservar viagem \n\n")
 
-resp=input("Por favor escolha uma opção: ")
+resp = input("Por favor escolha uma opção: ")
 
-#input e verificação dos inputs das estações (feitas)
-if (resp=="1"):
-    check=False
-    while check==False:
-        cod_est=input("Por favor insira o codigo da estação: ")
-        path = os.path.realpath(__file__) 
-        dir = os.path.dirname(path) 
-        dir = dir.replace('codigo', 'dados') 
-        os.chdir(dir) 
-        ficheiro= open("tabela_estacoes.txt","r")
-        dados=ficheiro.readlines()
-        ficheiro.close()
+# Adicionar Estação
+if resp == "1":
+    check = False
+    while not check:
+        cod_est = input("Por favor insira o código da estação: ")
+        if not verificar_codigo_unico("tabela_estacoes.txt", cod_est):
+            print("Código de estação já existe, por favor insira outro!")
+        else:
+            check = True
 
-        count=0
-        dadoslist=[]
-        for i in dados:
-            dadoslist.append(dados[count].split(";"))
-            count=count+1
-        
-        count=0
-        check=True
-        for i in dados:
-            print (dadoslist[count][0])
-            if dadoslist[count][0] == cod_est:
-                print("Código de estação já existe, por favor insira outro!")
-                check=False
-                break
-            count=count+1
+    nome_est = input("Por favor insira o nome da estação: ")
+    lati = float(input("Por favor insira a Latitude da estação: "))
+    longi = float(input("Por favor insira a Longitude da estação: "))
 
+    my_functions.estacao(cod_est, nome_est, lati, longi)
 
-    nome_est= input("Por favor insira o nome da estação: ")
+# Adicionar Carril
+elif resp == "2":
+    check = False
+    while not check:
+        cod_car = input("Por favor insira o código do carril: ")
+        if not verificar_codigo_unico("tabela_carril.txt", cod_car):
+            print("Código de carril já existe, por favor insira outro!")
+        else:
+            check = True
 
-    lati= float(input("Por favor insira a Latitude da estação: "))
+    estacoes = ler_arquivo("tabela_estacoes.txt")
+    check_estacoes = False
+    while not check_estacoes:
+        estA = input("Por favor insira o nome de uma das estações ligadas por este carril: ")
+        estB = input("Por favor insira o nome da outra estação ligada por este carril: ")
 
-    longi=float(input("Por favor insira a longitude da estação: "))
-
-    my_functions.estacao(cod_est,nome_est,lati,longi)
-
-#input e verificação dos inputs dos carris (feitas)
-if (resp=="2"):
-    check=False
-    while check==False:
-        cod_car=input("Por favor insira o codigo do carril: ")
-        path = os.path.realpath(__file__) 
-        dir = os.path.dirname(path) 
-        dir = dir.replace('codigo', 'dados') 
-        os.chdir(dir) 
-        ficheiro= open("tabela_carril.txt","r")
-        dados=ficheiro.readlines()
-        ficheiro.close()
-        count=0
-        dadoslist=[]
-        for i in dados:
-            dadoslist.append(dados[count])
-            count=count+1
-
-        count=0
-        check=True
-        for i in dados:
-           
-            if dadoslist[count][0] == cod_car:
-                print("Código de carril já existe, por favor insira outro!")
-                check=False
-                break
-            count=count+1
-
-    path = os.path.realpath(__file__) 
-    dir = os.path.dirname(path) 
-    dir = dir.replace('codigo', 'dados') 
-    os.chdir(dir) 
-    ficheiro= open("tabela_estacoes.txt","r")
-    dados=ficheiro.readlines()
-    ficheiro.close()
-    count=0
-    dadoslist=[]
-    for i in dados:
-        dadoslist.append(dados[count].split(";"))
-        count=count+1
-            
-
-
-        check=False
-    while (check==False):
-
-        estA= input("Por favor insira o nome de uma das estações ligadas por este carril: ")
-
-        estB= input("Por favor insira o nome da outra estação ligada por este carril: ")
-
-        count=0
-        estcheck=0
-        check=True
-        for i in dados:
-            
-            
-            if (dadoslist[count][0] == estA) or (dadoslist[count][0]==estB) :
-               
-                estcheck=estcheck+1
-                
-            count=count+1
-        
-        if estcheck<2:
+        if any(e[0] == estA for e in estacoes) and any(e[0] == estB for e in estacoes):
+            check_estacoes = True
+        else:
             print("Pelo menos uma das estações não existe, certifique-se que ambas as estações que quer ligar existem antes de criar um carril!")
-            check=False
-            
-            
-    dist= float(input("Por favor insira a distancia entre as estações: "))
 
-    maxvel=float(input("Por favor insira a velocidade maxima entre as estações: "))
+    dist = float(input("Por favor insira a distância entre as estações: "))
+    maxvel = float(input("Por favor insira a velocidade máxima entre as estações: "))#lembrar que os comboios da cp nao podem ir muito rapido senao passam por cima de gajos de fones a ouvir musica
 
-    my_functions.carril(cod_car,estA,estB,dist,maxvel)
+    my_functions.carril(cod_car, estA, estB, dist, maxvel)
 
-#input e verificação dos inputs dos comboios (feitas)
-if (resp=="3"):
-    cod_comb=""
-    check=False
-    while (check==False) or (len(cod_comb)!=5):
-        cod_comb=input("Por favor insira o número de série do comboio: ")
-       
-            
-        path = os.path.realpath(__file__) 
-        dir = os.path.dirname(path) 
-        dir = dir.replace('codigo', 'dados') 
-        os.chdir(dir) 
-        ficheiro= open("tabela_comboios.txt","r")
-        dados=ficheiro.readlines()
-        ficheiro.close()
-        
-        count=0
-        check=True
-        print(len(cod_comb))
-        for i in dados:
-            dadoslist=dados[count].split(";")
-            
-            
-            if (dadoslist[0]==cod_comb):
-                print("Código de comboio já existe, por favor insira outro")
-                check=False
-            count=count+1  
-            print(check)
-            
-    modelocomb=input("Por favor insira o modelo do comboio: ")
-    velocidadecomb=input("Por favor insira a velocidade máxima do comboio: ")
-    capacidadecomb=input("Por favor insira a capacidade máxima do comboio: ")
-    tiposervico=""
-    while (tiposervico != "U" and tiposervico!="R" and tiposervico!="I" and tiposervico!="A"):
-        tiposervico=input("Por favor insira o tipo de serviço (U, R, I ou A): ").upper()
+# Adicionar Comboio
+elif resp == "3":
+    check = False
+    cod_comb = ""
+    while not check or len(cod_comb) != 5:
+        cod_comb = input("Por favor insira o número de série do comboio (5 dígitos): ")
+        if not verificar_codigo_unico("tabela_comboios.txt", cod_comb):
+            print("Código de comboio já existe, por favor insira outro!")
+            check = False
+        else:
+            check = True
 
-    my_functions.comboio(cod_comb,modelocomb,velocidadecomb,capacidadecomb,tiposervico)
+    modelo_comb = input("Por favor insira o modelo do comboio: ")
+    velocidade_comb = input("Por favor insira a velocidade máxima do comboio: ")
+    capacidade_comb = input("Por favor insira a capacidade máxima do comboio: ")
 
-#input e verificação dos inputs das linhas (a fazer)
+    tiposervico = ""
+    while tiposervico not in ["U", "R", "I", "A"]:
+        tiposervico = input("Por favor insira o tipo de serviço (U, R, I ou A): ").upper()
 
-if (resp=="4"):
-    path = os.path.realpath(__file__) 
-    dir = os.path.dirname(path) 
-    dir = dir.replace('codigo', 'dados') 
-    os.chdir(dir) 
-    ficheiro= open("tabela_linhas.txt","r")
-    dados=ficheiro.readlines()
-    ficheiro.close()
+    my_functions.comboio(cod_comb, modelo_comb, velocidade_comb, capacidade_comb, tiposervico)
 
-    codlinha=input("Por favor insira o codigo desta linha: ")
-    count=0
-    dadoslist=[]
-    for i in dados:
-        dadoslist.append(dados[count].split(";"))
-        count=count+1
-
-    count=0
-    check=True
-    for i in dados:
-        print (dadoslist[count][0])
-        if dadoslist[count][0] == codlinha:
+# Adicionar Linha
+elif resp == "4":
+    check = False
+    while not check:
+        cod_linha = input("Por favor insira o código desta linha: ")
+        if not verificar_codigo_unico("tabela_linhas.txt", cod_linha):
             print("Código da linha já existe, por favor insira outro!")
-            check=False
-            break
-        count=count+1
-    nomelinha=input("Por favor insira o nome desta linha: ")
+        else:
+            check = True
 
-    quantests=quantests = int(input("Por favor insira quantas estações quer que façam parte desta linha: "))
+    nome_linha = input("Por favor insira o nome desta linha: ")
+    quant_ests = int(input("Por favor insira quantas estações quer que façam parte desta linha: "))
 
+    estacoes = ler_arquivo("tabela_estacoes.txt")
+    carris = ler_arquivo("tabela_carril.txt")
+    ests = []
 
-    ests=[]
-    listacarril=[]
-    listaestacao=[]
+    count = 0
+    while count < quant_ests:
+        est_check = False
+        carril_check = False
 
-    ficheiroest= open("tabela_estacoes.txt","r")
-    dadosest=ficheiroest.readlines()
-    ficheiroest.close()
-
-    ficheirocar= open("tabela_carril.txt","r")
-    dadoscar=ficheirocar.readlines()
-    ficheirocar.close()
-
-    count=0
-    for i in dadosest:
-        listaestacao.append(dadosest[count].split(";"))
-        count=count+1
-
-    count=0
-    for i in dadoscar:
-        listacarril.append(dadoscar[count].split(";"))
-        count=count+1
-
-    count=0
-
-    while count < quantests:  
-        estcheck = False
-        carrilcheck = False
-
-    
         est = input(f"Por favor diga qual vai ser a {count + 1}ª estação: ").upper()
 
-   
-        for i in listaestacao:
-            if est == i[0]:
-                estcheck = True
-                break  
+        if any(e[0] == est for e in estacoes):
+            est_check = True
 
-    
-        for i in listacarril:
-       
-            if len(ests) == 0:
-                print(i)
-                if est == i[1] or est == i[2]:  
-                    carrilcheck = True
-                    break  
+        if len(ests) == 0:
+            if any(est in (c[1], c[2]) for c in carris):
+                carril_check = True
+        else:
+            ultima_est = ests[-1]
+            if any((ultima_est in (c[1], c[2]) and est in (c[1], c[2])) for c in carris):
+                carril_check = True
 
-            elif len(ests) > 0:
-                if est == i[1] or est == i[2]:  
-                    if est == listaestacao[len(ests)][0] or est == listaestacao[len(ests)][0]:
-                        carrilcheck = True
-                        break  
-
-    
-        if estcheck and carrilcheck:
+        if est_check and carril_check:
             ests.append(est)
-            count += 1  
+            count += 1
         else:
             print("A estação que pediu não existe ou não tem ligações com outras estações!")
 
-    tiposervico=""
-    while (tiposervico != "U" and tiposervico!="R" and tiposervico!="I" and tiposervico!="A"):
-        tiposervico=input("Por favor insira o tipo de serviço (U, R, I ou A): ").upper()
+    tiposervico = ""
+    while tiposervico not in ["U", "R", "I", "A"]:
+        tiposervico = input("Por favor insira o tipo de serviço (U, R, I ou A): ").upper()
 
-    my_functions.linha(codlinha,nomelinha,ests,tiposervico)
-
-#Tratar de criar uma viagem a seguir. depende de linha e comboio
+    my_functions.linha(cod_linha, nome_linha, ests, tiposervico)
