@@ -1,27 +1,27 @@
 import my_functions
 import os
 
-# Defini funcoes iniciais de maneira a que o codigo fique mais limpo pois podes chamar apenas uma vez a funcao e nao ter de repetir o codigo
+# Defini funções iniciais de maneira a que o código fique mais limpo pois podes chamar apenas uma vez a função e não ter de repetir o código
 def obter_diretorio_dados():
-    #Mostrar aonde estao guardados
+    # Mostrar onde estão guardados
     path = os.path.realpath(__file__)
     return os.path.join(os.path.dirname(path).replace('codigo', 'dados'))
 
-def ler_arquivo(nome_arquivo):
-    #Ler os dados do ficheiro
+def ler_ficheiro(nome_ficheiro):
+    # Ler os dados do ficheiro
     dir_dados = obter_diretorio_dados()
-    caminho_arquivo = os.path.join(dir_dados, nome_arquivo)
-    f = open(caminho_arquivo, "r")
+    caminho_ficheiro = os.path.join(dir_dados, nome_ficheiro)
+    f = open(caminho_ficheiro, "r")
     linhas = [linha.strip().split(";") for linha in f.readlines()]
     f.close()
     return linhas
 
-def verificar_codigo_unico(nome_arquivo, codigo, indice=0):
-    #Verificação se é unico
-    dados = ler_arquivo(nome_arquivo)
+def verificar_codigo_unico(nome_ficheiro, codigo, indice=0):
+    # Verificação se é único
+    dados = ler_ficheiro(nome_ficheiro)
     return all(linha[indice] != codigo for linha in dados)
 
-# Menu inicial da CP os comboios que nunca se atrazam
+# Menu inicial da CP, os comboios que nunca se atrasam
 print("Bem vindo à CP!! \n\n 1-Adicionar estação \n\n 2-Adicionar carril \n\n 3-Adicionar Comboio \n\n 4- Adicionar Linha\n\n 5-Adicionar Viagem \n\n 6-Reservar viagem \n\n")
 
 resp = input("Por favor escolha uma opção: ")
@@ -52,7 +52,7 @@ elif resp == "2":
         else:
             check = True
 
-    estacoes = ler_arquivo("tabela_estacoes.txt")
+    estacoes = ler_ficheiro("tabela_estacoes.txt")
     check_estacoes = False
     while not check_estacoes:
         estA = input("Por favor insira o nome de uma das estações ligadas por este carril: ")
@@ -103,8 +103,8 @@ elif resp == "4":
     nome_linha = input("Por favor insira o nome desta linha: ")
     quant_ests = int(input("Por favor insira quantas estações quer que façam parte desta linha: "))
 
-    estacoes = ler_arquivo("tabela_estacoes.txt")
-    carris = ler_arquivo("tabela_carril.txt")
+    estacoes = ler_ficheiro("tabela_estacoes.txt")
+    carris = ler_ficheiro("tabela_carril.txt")
     ests = []
 
     count = 0

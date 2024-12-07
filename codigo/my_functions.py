@@ -1,73 +1,34 @@
-import os.path
+import os
 
-# Função d tabela da estação, entra na tabela de estações e introduz todos os dados na tabela
-def estacao(cod_est,nome,lati,longi):
-    pathest = os.path.realpath(__file__)
-    dir=os.path.dirname(pathest)
-    dir= dir.replace("codigo","dados")
-    os.chdir(dir)
-    tabela_estacoes = open ("tabela_estacoes.txt", "a")
-    cod_est=str(cod_est)
-    nome=str(nome)
-    lati=str(lati)
-    longi=str(longi)
-    textoest= cod_est + ";" + nome + ";" + lati + ";" + longi + "\n"
-    tabela_estacoes.writelines( textoest )
-    tabela_estacoes.close()
+# Caminho do ficheiro txt 
+def caminho_ficheiro(nome_ficheiro):
+    path = os.path.realpath(__file__)
+    dir = os.path.dirname(path).replace("codigo", "dados")
+    return os.path.join(dir, nome_ficheiro)
 
+# Guardar dados num ficheiro
+def guardar_em_ficheiro(nome_ficheiro, texto):
+    caminho = caminho_ficheiro(nome_ficheiro)
+    ficheiro = open(caminho, "a")
+    ficheiro.writelines(texto + "\n")
+    ficheiro.close()
 
-#Tabela do carril
+# Adicionar uma estação em tabela_estacoes.txt
+def estacao(cod_est, nome, lati, longi):
+    texto = str(cod_est) + ";" + str(nome) + ";" + str(lati) + ";" + str(longi)
+    guardar_em_ficheiro("tabela_estacoes.txt", texto)
 
-def carril(cod_carr,esta,estb,dist,velmaxperm):
-    pathcarr = os.path.realpath(__file__)
-    dir=os.path.dirname(pathcarr)
-    dir= dir.replace("codigo","dados")
-    os.chdir(dir)
-    tabela_carril = open ("tabela_carril.txt", "a")
-    cod_carr=str(cod_carr)
-    esta=str(esta)
-    estb=str(estb)
-    dist=str(dist)
-    velmaxperm= str (velmaxperm)
-    textocarr= cod_carr + ";" + esta + ";" + estb + ";" + dist + ";" + velmaxperm + "\n"
-    tabela_carril.writelines( textocarr )
-    tabela_carril.close()
+# Adicionar um carril tabela_carril.txt
+def carril(cod_carr, esta, estb, dist, velmaxperm):
+    texto = str(cod_carr) + ";" + str(esta) + ";" + str(estb) + ";" + str(dist) + ";" + str(velmaxperm)
+    guardar_em_ficheiro("tabela_carril.txt", texto)
 
-#tabela do comboio
+# Adicionar um comboio em tabela_comboios.txt
+def comboio(cod_comb, modelo_comb, velocidade_comb, capacidade_comb, tipo_servico):
+    texto = str(cod_comb) + ";" + str(modelo_comb) + ";" + str(velocidade_comb) + ";" + str(capacidade_comb) + ";" + str(tipo_servico)
+    guardar_em_ficheiro("tabela_comboios.txt", texto)
 
-def comboio(cod_comb,modelocomb,velocidadecomb,capacidadecomb,tiposervico):
-    pathcarr = os.path.realpath(__file__)
-    dir=os.path.dirname(pathcarr)
-    dir= dir.replace("codigo","dados")
-    os.chdir(dir)
-    tabela_comboios = open ("tabela_comboios.txt", "a")
-    cod_comb=str(cod_comb)
-    modelocomb=str(modelocomb)
-    velocidadecomb=str(velocidadecomb)
-    capacidadecomb=str(capacidadecomb)
-    
-    tiposervico= str (tiposervico)
-    textocarr= cod_comb + ";" + modelocomb + ";" + velocidadecomb + ";" + capacidadecomb + ";" + tiposervico + "\n"
-    tabela_comboios.writelines( textocarr )
-    tabela_comboios.close()
-
-#Tabela das linhas
-
-def linha(codlinh, nomelinh, ests,servi):
-    pathcarr = os.path.realpath(__file__)
-    dir=os.path.dirname(pathcarr)
-    dir= dir.replace("codigo","dados")
-    os.chdir(dir)
-    tabela_comboios = open ("tabela_linhas.txt", "a")
-    codlinh=str(codlinh)
-    nomelinh=str(nomelinh)
-    ests=str(ests)
-    servi=str(servi)
-    textolinha= codlinh + ";" + nomelinh + ";" + ests + ";" + servi + "\n"
-    tabela_comboios.writelines( textolinha )
-    tabela_comboios.close()
-
-
-
-
-
+# Adicionar uma linha em tabela_linhas.txt. aqui nao temos de verificar ests e servi ne? a verificacao é feita no main.py?
+def linha(cod_linh, nome_linh, ests, servi):
+    texto = str(cod_linh) + ";" + str(nome_linh) + ";" + str(ests) + ";" + str(servi)
+    guardar_em_ficheiro("tabela_linhas.txt", texto)
