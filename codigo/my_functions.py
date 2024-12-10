@@ -1,34 +1,127 @@
 import os
 
-# Caminho do ficheiro txt 
 def caminho_ficheiro(nome_ficheiro):
     path = os.path.realpath(__file__)
     dir = os.path.dirname(path).replace("codigo", "dados")
+    if not os.path.exists(dir):
+        os.makedirs(dir)  # Certifique-se de que o diretório "dados" exista
     return os.path.join(dir, nome_ficheiro)
 
-# Guardar dados num ficheiro
-def guardar_em_ficheiro(nome_ficheiro, texto):
-    caminho = caminho_ficheiro(nome_ficheiro)
+def validar_numero(valor, tipo="float"):
+    if tipo == "int":
+        return valor.isdigit()
+    try:
+        float(valor)
+        return True
+    except ValueError:
+        return False
+
+def estacao_existe(codigo):
+    estacoes = listar_estacoes()
+    for estacao in estacoes:
+        if estacao[0] == codigo:
+            return True
+    return False
+
+def obter_conexoes():
+    """Cria um grafo com base nos carris disponíveis."""
+    conexoes = {}
+    carris = listar_carris()
+    for carril in carris:
+        estacao_a, estacao_b = carril[1], carril[2]
+        if estacao_a not in conexoes:
+            conexoes[estacao_a] = []
+        if estacao_b not in conexoes:
+            conexoes[estacao_b] = []
+        conexoes[estacao_a].append(estacao_b)
+        conexoes[estacao_b].append(estacao_a)
+    return conexoes
+
+def existe_caminho(estacao_a, estacao_b):
+    """Verifica se existe um caminho entre duas estações usando BFS."""
+    conexoes = obter_conexoes()
+    if estacao_a not in conexoes or estacao_b not in conexoes:
+        return False
+    
+    visitados = set()
+    fila = [estacao_a]
+
+    while fila:
+        atual = fila.pop(0)
+        if atual == estacao_b:
+            return True
+        if atual not in visitados:
+            visitados.add(atual)
+            fila.extend(conexoes[atual])
+    return False
+
+def adicionar_estacao(codigo, nome, latitude, longitude):
+    if not validar_numero(latitude) or not validar_numero(longitude):
+        print("Erro: Latitude e longitude devem ser números válidos.")
+        return
+    caminho = caminho_ficheiro("estacoes.txt")
+    linha = codigo + ";" + nome + ";" + latitude + ";" + longitude + "\n"
     ficheiro = open(caminho, "a")
-    ficheiro.writelines(texto + "\n")
+    ficheiro.write(linha)
     ficheiro.close()
 
-# Adicionar uma estação em tabela_estacoes.txt
-def estacao(cod_est, nome, lati, longi):
-    texto = str(cod_est) + ";" + str(nome) + ";" + str(lati) + ";" + str(longi)
-    guardar_em_ficheiro("tabela_estacoes.txt", texto)
+def listar_estacoes():
+    caminho = caminho_ficheiro("estacoes.txt")
+    if not os.path.exists(caminho):
+        return []
+    estacoes = []
+    ficheiro = open(caminho, "r")
+    linhas = ficheiro.readlines()
+    ficheiro.close()
+    for linha in linhas:
+        estacoes.append(linha.strip().split(";"))
+    return estacoes
 
-# Adicionar um carril tabela_carril.txt
-def carril(cod_carr, esta, estb, dist, velmaxperm):
-    texto = str(cod_carr) + ";" + str(esta) + ";" + str(estb) + ";" + str(dist) + ";" + str(velmaxperm)
-    guardar_em_ficheiro("tabela_carril.txt", texto)
+def adicionar_carril(estacao_a, estacao_b, distancia, vel_max):
+    if not validar_numero(distancia) or not validar_numero(vel_max):
+        print("Erro: Distância e velocidade máxima devem ser números válidos.")
+        return
+    caminho = caminho_ficheiro("carris.txt")
+    codigo_carril = estacao_a + "_" + estacao_b
+    linha = codigo_carril + ";" + estacao_a + ";" + estacao_b + ";" + distancia + ";" + vel_max + "\n"
+    ficheiro = open(caminho, "a")
+    ficheiro.write(linha)
+    ficheiro.close()
 
-# Adicionar um comboio em tabela_comboios.txt
-def comboio(cod_comb, modelo_comb, velocidade_comb, capacidade_comb, tipo_servico):
-    texto = str(cod_comb) + ";" + str(modelo_comb) + ";" + str(velocidade_comb) + ";" + str(capacidade_comb) + ";" + str(tipo_servico)
-    guardar_em_ficheiro("tabela_comboios.txt", texto)
+def listar_carris():
+    caminho = caminho_ficheiro("carris.txt")
+    if not os.path.exists(caminho):
+        return []
+    carris = []
+    ficheiro = open(caminho, "r")
+    linhas = ficheiro.readlines()
+    ficheiro.close()
+    for linha in linhas:
+        carris.append(linha.strip().split(";"))
+    return carris
 
-# Adicionar uma linha em tabela_linhas.txt. aqui nao temos de verificar ests e servi ne? a verificacao é feita no main.py?
-def linha(cod_linh, nome_linh, ests, servi):
-    texto = str(cod_linh) + ";" + str(nome_linh) + ";" + str(ests) + ";" + str(servi)
-    guardar_em_ficheiro("tabela_linhas.txt", texto)
+def adicionar_linha(codigo_linha, nome, estacao_partida, estacao_chegada, tipo_servico):
+    if not estacao_existe(estacao_partida) or not estacao_existe(estacao_chegada):
+        print("Erro: Estações de partida ou chegada não existem.")
+        return False
+    if not existe_caminho(estacao_partida, estacao_chegada):
+        print("Erro: Não há carris conectando as estações especificadas.")
+        return False
+    caminho = caminho_ficheiro("linhas.txt")
+    linha = codigo_linha + ";" + nome + ";" + estacao_partida + ";" + estacao_chegada + ";" + tipo_servico + "\n"
+    ficheiro = open(caminho, "a")
+    ficheiro.write(linha)
+    ficheiro.close()
+    return True
+
+def listar_linhas():
+    caminho = caminho_ficheiro("linhas.txt")
+    if not os.path.exists(caminho):
+        return []
+    linhas = []
+    ficheiro = open(caminho, "r")
+    conteudo = ficheiro.readlines()
+    ficheiro.close()
+    for linha in conteudo:
+        linhas.append(linha.strip().split(";"))
+    return linhas

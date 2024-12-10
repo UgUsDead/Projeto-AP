@@ -1,138 +1,92 @@
-import my_functions
 import os
+import my_functions as mf
 
-# Defini funções iniciais de maneira a que o código fique mais limpo pois podes chamar apenas uma vez a função e não ter de repetir o código
-def obter_diretorio_dados():
-    # Mostrar onde estão guardados
-    path = os.path.realpath(__file__)
-    return os.path.join(os.path.dirname(path).replace('codigo', 'dados'))
+def menu_principal():
+    print("Bem-vindo ao Sistema de Gestão Ferroviária!")
+    print("1. Adicionar Estação")
+    print("2. Listar Estações")
+    print("3. Adicionar Carril")
+    print("4. Listar Carris")
+    print("5. Adicionar Linha")
+    print("6. Listar Linhas")
+    print("0. Sair")
 
-def ler_ficheiro(nome_ficheiro):
-    # Ler os dados do ficheiro
-    dir_dados = obter_diretorio_dados()
-    caminho_ficheiro = os.path.join(dir_dados, nome_ficheiro)
-    f = open(caminho_ficheiro, "r")
-    linhas = [linha.strip().split(";") for linha in f.readlines()]
-    f.close()
-    return linhas
-
-def verificar_codigo_unico(nome_ficheiro, codigo, indice=0):
-    # Verificação se é único
-    dados = ler_ficheiro(nome_ficheiro)
-    return all(linha[indice] != codigo for linha in dados)
-
-# Menu inicial da CP, os comboios que nunca se atrasam
-print("Bem vindo à CP!! \n\n 1-Adicionar estação \n\n 2-Adicionar carril \n\n 3-Adicionar Comboio \n\n 4- Adicionar Linha\n\n 5-Adicionar Viagem \n\n 6-Reservar viagem \n\n")
-
-resp = input("Por favor escolha uma opção: ")
-
-# Adicionar Estação
-if resp == "1":
-    check = False
-    while not check:
-        cod_est = input("Por favor insira o código da estação: ")
-        if not verificar_codigo_unico("tabela_estacoes.txt", cod_est):
-            print("Código de estação já existe, por favor insira outro!")
+while True:
+    menu_principal()
+    opcao = input("Escolha uma opção: ")
+    
+    if opcao == "1":
+        codigo = input("Código da estação (4 letras): ").strip().upper()
+        nome = input("Nome da estação: ").strip()
+        latitude = input("Latitude: ").strip()
+        longitude = input("Longitude: ").strip()
+        
+        if mf.estacao_existe(codigo):
+            print("Erro: A estação já existe!")
         else:
-            check = True
-
-    nome_est = input("Por favor insira o nome da estação: ")
-    lati = float(input("Por favor insira a Latitude da estação: "))
-    longi = float(input("Por favor insira a Longitude da estação: "))
-
-    my_functions.estacao(cod_est, nome_est, lati, longi)
-
-# Adicionar Carril
-elif resp == "2":
-    check = False
-    while not check:
-        cod_car = input("Por favor insira o código do carril: ")
-        if not verificar_codigo_unico("tabela_carril.txt", cod_car):
-            print("Código de carril já existe, por favor insira outro!")
+            mf.adicionar_estacao(codigo, nome, latitude, longitude)
+            print("Estação adicionada com sucesso!")
+    
+    elif opcao == "2":
+        estacoes = mf.listar_estacoes()
+        if estacoes:
+            print("Estações cadastradas:")
+            for estacao in estacoes:
+                print("Código:", estacao[0], "| Nome:", estacao[1], "| Lat:", estacao[2], "| Long:", estacao[3])
         else:
-            check = True
-
-    estacoes = ler_ficheiro("tabela_estacoes.txt")
-    check_estacoes = False
-    while not check_estacoes:
-        estA = input("Por favor insira o nome de uma das estações ligadas por este carril: ")
-        estB = input("Por favor insira o nome da outra estação ligada por este carril: ")
-
-        if any(e[0] == estA for e in estacoes) and any(e[0] == estB for e in estacoes):
-            check_estacoes = True
+            print("Nenhuma estação cadastrada.")
+    
+    elif opcao == "3":
+        estacao_a = input("Código da estação A: ").strip().upper()
+        estacao_b = input("Código da estação B: ").strip().upper()
+        distancia = input("Distância (km): ").strip()
+        vel_max = input("Velocidade máxima permitida (km/h): ").strip()
+        
+        if mf.estacao_existe(estacao_a) and mf.estacao_existe(estacao_b):
+            mf.adicionar_carril(estacao_a, estacao_b, distancia, vel_max)
+            print("Carril adicionado com sucesso!")
         else:
-            print("Pelo menos uma das estações não existe, certifique-se que ambas as estações que quer ligar existem antes de criar um carril!")
-
-    dist = float(input("Por favor insira a distância entre as estações: "))
-    maxvel = float(input("Por favor insira a velocidade máxima entre as estações: "))#lembrar que os comboios da cp nao podem ir muito rapido senao passam por cima de gajos de fones a ouvir musica
-
-    my_functions.carril(cod_car, estA, estB, dist, maxvel)
-
-# Adicionar Comboio
-elif resp == "3":
-    check = False
-    cod_comb = ""
-    while not check or len(cod_comb) != 5:
-        cod_comb = input("Por favor insira o número de série do comboio (5 dígitos): ")
-        if not verificar_codigo_unico("tabela_comboios.txt", cod_comb):
-            print("Código de comboio já existe, por favor insira outro!")
-            check = False
+            print("Erro: Uma ou ambas as estações não existem.")
+    
+    elif opcao == "4":
+        carris = mf.listar_carris()
+        if carris:
+            print("Carris cadastrados:")
+            for carril in carris:
+                print("Código:", carril[0], "| Estação A:", carril[1], "| Estação B:", carril[2],
+                      "| Distância:", carril[3], "km | Vel. Máx.:", carril[4], "km/h")
         else:
-            check = True
-
-    modelo_comb = input("Por favor insira o modelo do comboio: ")
-    velocidade_comb = input("Por favor insira a velocidade máxima do comboio: ")
-    capacidade_comb = input("Por favor insira a capacidade máxima do comboio: ")
-
-    tiposervico = ""
-    while tiposervico not in ["U", "R", "I", "A"]:
-        tiposervico = input("Por favor insira o tipo de serviço (U, R, I ou A): ").upper()
-
-    my_functions.comboio(cod_comb, modelo_comb, velocidade_comb, capacidade_comb, tiposervico)
-
-# Adicionar Linha
-elif resp == "4":
-    check = False
-    while not check:
-        cod_linha = input("Por favor insira o código desta linha: ")
-        if not verificar_codigo_unico("tabela_linhas.txt", cod_linha):
-            print("Código da linha já existe, por favor insira outro!")
+            print("Nenhum carril cadastrado.")
+    
+    elif opcao == "5":
+        codigo_linha = input("Código da linha: ").strip().upper()
+        nome = input("Nome da linha: ").strip()
+        estacao_partida = input("Código da estação de partida: ").strip().upper()
+        estacao_chegada = input("Código da estação de chegada: ").strip().upper()
+        tipo_servico = input("Tipo de serviço (U, R, I, A): ").strip().upper()
+        
+        if mf.estacao_existe(estacao_partida) and mf.estacao_existe(estacao_chegada):
+            sucesso = mf.adicionar_linha(codigo_linha, nome, estacao_partida, estacao_chegada, tipo_servico)
+            if sucesso:
+                print("Linha adicionada com sucesso!")
+            else:
+                print("Erro ao adicionar a linha.")
         else:
-            check = True
-
-    nome_linha = input("Por favor insira o nome desta linha: ")
-    quant_ests = int(input("Por favor insira quantas estações quer que façam parte desta linha: "))
-
-    estacoes = ler_ficheiro("tabela_estacoes.txt")
-    carris = ler_ficheiro("tabela_carril.txt")
-    ests = []
-
-    count = 0
-    while count < quant_ests:
-        est_check = False
-        carril_check = False
-
-        est = input(f"Por favor diga qual vai ser a {count + 1}ª estação: ").upper()
-
-        if any(e[0] == est for e in estacoes):
-            est_check = True
-
-        if len(ests) == 0:
-            if any(est in (c[1], c[2]) for c in carris):
-                carril_check = True
+            print("Erro: Uma ou ambas as estações não existem.")
+    
+    elif opcao == "6":
+        linhas = mf.listar_linhas()
+        if linhas:
+            print("Linhas cadastradas:")
+            for linha in linhas:
+                print("Código:", linha[0], "| Nome:", linha[1], "| Partida:", linha[2],
+                      "| Chegada:", linha[3], "| Tipo de Serviço:", linha[4])
         else:
-            ultima_est = ests[-1]
-            if any((ultima_est in (c[1], c[2]) and est in (c[1], c[2])) for c in carris):
-                carril_check = True
-
-        if est_check and carril_check:
-            ests.append(est)
-            count += 1
-        else:
-            print("A estação que pediu não existe ou não tem ligações com outras estações!")
-
-    tiposervico = ""
-    while tiposervico not in ["U", "R", "I", "A"]:
-        tiposervico = input("Por favor insira o tipo de serviço (U, R, I ou A): ").upper()
-
-    my_functions.linha(cod_linha, nome_linha, ests, tiposervico)
+            print("Nenhuma linha cadastrada.")
+    
+    elif opcao == "0":
+        print("Encerrando o sistema. Até logo!")
+        break
+    
+    else:
+        print("Opção inválida! Tente novamente.")
