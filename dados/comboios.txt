@@ -1,0 +1,2 @@
+12345;Ford Fiesta;250;1000000;Urbano
+69420;SexMobile;420;8;Urbano
