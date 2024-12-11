@@ -289,7 +289,7 @@ def adicionar_reserva_viagem(identificador_reserva_viagem, identificador_viagem,
         if viagem[0] == identificador_viagem:
             viagem_existe = True
             capacidade_maxima = int(viagem[8])
-            numero_passageiros = int(viagem[9])
+            numero_passageiros = int(viagem[8])  # Corrigido para usar o índice correto
             break
     
     if not viagem_existe:
