@@ -1,254 +1,177 @@
-import my_functions
-from pathlib import Path
 import os
-print("Bem vindo à CP!! \n\n 1-Adicionar estação \n\n 2-Adicionar carril \n\n 3-Adicionar Comboio \n\n 4- Adicionar Linha\n\n 5-Adicionar Viagem \n\n 6-Reservar viagem \n\n")
+import my_functions as mf
 
-resp=input("Por favor escolha uma opção: ")
+def menu_principal():
+    print("Bem-vindo ao Sistema de Gestão Ferroviária!")
+    print("1. Adicionar Estação")
+    print("2. Adicionar Carril")
+    print("3. Adicionar Linha")
+    print("4. Adicionar Comboio")
+    print("5. Adicionar Viagem")
+    print("6. Adicionar Paragem de Viagem")
+    print("7. Listar Estações")
+    print("8. Listar Carris")
+    print("9. Listar Linhas")
+    print("10. Listar Comboios")
+    print("11. Listar Viagens por Linha")
+    print("12. Adicionar Reserva de Viagem")
+    print("13. Listar Horário de uma Viagem e suas Paragens")
+    print("0. Sair")
 
-#input e verificação dos inputs das estações (feitas)
-if (resp=="1"):
-    check=False
-    while check==False:
-        cod_est=input("Por favor insira o codigo da estação: ")
-        path = os.path.realpath(__file__) 
-        dir = os.path.dirname(path) 
-        dir = dir.replace('codigo', 'dados') 
-        os.chdir(dir) 
-        ficheiro= open("tabela_estacoes.txt","r")
-        dados=ficheiro.readlines()
-        ficheiro.close()
+while True:
+    menu_principal()
+    opcao = input("Escolha uma opção: ").strip()
+    
+    match opcao:
+        case "1":
+            codigo = input("Código da estação (4 letras): ").strip().upper()
+            nome = input("Nome da estação: ").strip()
+            latitude = input("Latitude: ").strip()
+            longitude = input("Longitude: ").strip()
 
-        count=0
-        dadoslist=[]
-        for i in dados:
-            dadoslist.append(dados[count].split(";"))
-            count=count+1
+            if len(codigo) != 4:
+                print("Código tem de ter 4 letras!")
+            else:
+                if mf.estacao_existe(codigo):
+                    print("Erro: A estação já existe!")
+                else:
+                    mf.adicionar_estacao(codigo, nome, latitude, longitude)
+                    print("Estação adicionada com sucesso!")
         
-        count=0
-        check=True
-        for i in dados:
-            print (dadoslist[count][0])
-            if dadoslist[count][0] == cod_est:
-                print("Código de estação já existe, por favor insira outro!")
-                check=False
-                break
-            count=count+1
-
-
-    nome_est= input("Por favor insira o nome da estação: ")
-
-    lati= float(input("Por favor insira a Latitude da estação: "))
-
-    longi=float(input("Por favor insira a longitude da estação: "))
-
-    my_functions.estacao(cod_est,nome_est,lati,longi)
-
-#input e verificação dos inputs dos carris (feitas)
-if (resp=="2"):
-    check=False
-    while check==False:
-        cod_car=input("Por favor insira o codigo do carril: ")
-        path = os.path.realpath(__file__) 
-        dir = os.path.dirname(path) 
-        dir = dir.replace('codigo', 'dados') 
-        os.chdir(dir) 
-        ficheiro= open("tabela_carril.txt","r")
-        dados=ficheiro.readlines()
-        ficheiro.close()
-        count=0
-        dadoslist=[]
-        for i in dados:
-            dadoslist.append(dados[count])
-            count=count+1
-
-        count=0
-        check=True
-        for i in dados:
-           
-            if dadoslist[count][0] == cod_car:
-                print("Código de carril já existe, por favor insira outro!")
-                check=False
-                break
-            count=count+1
-
-    path = os.path.realpath(__file__) 
-    dir = os.path.dirname(path) 
-    dir = dir.replace('codigo', 'dados') 
-    os.chdir(dir) 
-    ficheiro= open("tabela_estacoes.txt","r")
-    dados=ficheiro.readlines()
-    ficheiro.close()
-    count=0
-    dadoslist=[]
-    for i in dados:
-        dadoslist.append(dados[count].split(";"))
-        count=count+1
+        case "2":
+            estacao_a = input("Código da estação A: ").strip().upper()
+            estacao_b = input("Código da estação B: ").strip().upper()
+            distancia = input("Distância (km): ").strip()
+            vel_max = input("Velocidade máxima permitida (km/h): ").strip()
             
-
-
-        check=False
-    while (check==False):
-
-        estA= input("Por favor insira o nome de uma das estações ligadas por este carril: ")
-
-        estB= input("Por favor insira o nome da outra estação ligada por este carril: ")
-
-        count=0
-        estcheck=0
-        check=True
-        for i in dados:
-            
-            
-            if (dadoslist[count][0] == estA) or (dadoslist[count][0]==estB) :
-               
-                estcheck=estcheck+1
-                
-            count=count+1
+            if not mf.carril_existe(estacao_a, estacao_b):
+                if mf.estacao_existe(estacao_a) and mf.estacao_existe(estacao_b):
+                    mf.adicionar_carril(estacao_a, estacao_b, distancia, vel_max)
+                    print("Carril adicionado com sucesso!")
+                else:
+                    print("Erro: Uma ou ambas as estações não existem!")
+            else:
+                print("Erro: O carril já existe!")
         
-        if estcheck<2:
-            print("Pelo menos uma das estações não existe, certifique-se que ambas as estações que quer ligar existem antes de criar um carril!")
-            check=False
-            
-            
-    dist= float(input("Por favor insira a distancia entre as estações: "))
+        case "3":
+            codigo_linha = input("Código da linha: ").strip().upper()
+            nome = input("Nome da linha: ").strip()
+            estacao_partida = input("Código da estação de partida: ").strip().upper()
+            estacao_chegada = input("Código da estação de chegada: ").strip().upper()
+            tipo_servico = input("Tipo de serviço (U, R, I, A): ").strip().upper()
 
-    maxvel=float(input("Por favor insira a velocidade maxima entre as estações: "))
-
-    my_functions.carril(cod_car,estA,estB,dist,maxvel)
-
-#input e verificação dos inputs dos comboios (feitas)
-if (resp=="3"):
-    cod_comb=""
-    check=False
-    while (check==False) or (len(cod_comb)!=5):
-        cod_comb=input("Por favor insira o número de série do comboio: ")
-       
-            
-        path = os.path.realpath(__file__) 
-        dir = os.path.dirname(path) 
-        dir = dir.replace('codigo', 'dados') 
-        os.chdir(dir) 
-        ficheiro= open("tabela_comboios.txt","r")
-        dados=ficheiro.readlines()
-        ficheiro.close()
+            if mf.adicionar_linha(codigo_linha, nome, estacao_partida, estacao_chegada, tipo_servico):
+                print("Linha adicionada com sucesso!")
+            else:
+                print("Falha ao adicionar linha.")
         
-        count=0
-        check=True
-        print(len(cod_comb))
-        for i in dados:
-            dadoslist=dados[count].split(";")
-            
-            
-            if (dadoslist[0]==cod_comb):
-                print("Código de comboio já existe, por favor insira outro")
-                check=False
-            count=count+1  
-            print(check)
-            
-    modelocomb=input("Por favor insira o modelo do comboio: ")
-    velocidadecomb=input("Por favor insira a velocidade máxima do comboio: ")
-    capacidadecomb=input("Por favor insira a capacidade máxima do comboio: ")
-    tiposervico=""
-    while (tiposervico != "U" and tiposervico!="R" and tiposervico!="I" and tiposervico!="A"):
-        tiposervico=input("Por favor insira o tipo de serviço (U, R, I ou A): ").upper()
+        case "4":
+            numero_serie = input("Número de Série (5 dígitos): ").strip()
+            modelo = input("Modelo: ").strip()
+            vel_max = input("Velocidade Máxima (km/h): ").strip()
+            capacidade = input("Capacidade: ").strip()
+            tipo_servico = input("Tipo de Serviço (U, R, I, A): ").strip().upper()
 
-    my_functions.comboio(cod_comb,modelocomb,velocidadecomb,capacidadecomb,tiposervico)
+            if mf.adicionar_comboio(numero_serie, modelo, vel_max, capacidade, tipo_servico):
+                print("Comboio adicionado com sucesso!")
+            else:
+                print("Falha ao adicionar comboio.")
+        
+        case "5":
+            identificador_viagem = input("Identificador da Viagem: ").strip()
+            codigo_linha = input("Código da Linha: ").strip().upper()
+            numero_serie_comboio = input("Número de Série do Comboio: ").strip()
+            hora_partida = input("Hora de Partida (HH:MM): ").strip()
+            hora_chegada = input("Hora de Chegada (HH:MM): ").strip()
+            dia = input("Dia: ").strip()
+            mes = input("Mês: ").strip()
+            ano = input("Ano: ").strip()
+            numero_passageiros = input("Número de Passageiros: ").strip()
 
-#input e verificação dos inputs das linhas (a fazer)
+            if mf.adicionar_viagem(identificador_viagem, codigo_linha, numero_serie_comboio, hora_partida, hora_chegada, dia, mes, ano, numero_passageiros):
+                print("Viagem adicionada com sucesso!")
+            else:
+                print("Falha ao adicionar viagem.")
+        
+        case "6":
+            identificador_paragem_viagem = input("Identificador da Paragem de Viagem: ").strip()
+            identificador_paragem = input("Identificador da Paragem: ").strip()
+            identificador_viagem = input("Identificador da Viagem: ").strip()
+            hora_paragem = input("Hora da Paragem (HH:MM): ").strip()
 
-if (resp=="4"):
-    path = os.path.realpath(__file__) 
-    dir = os.path.dirname(path) 
-    dir = dir.replace('codigo', 'dados') 
-    os.chdir(dir) 
-    ficheiro= open("tabela_linhas.txt","r")
-    dados=ficheiro.readlines()
-    ficheiro.close()
+            if mf.adicionar_paragem_viagem(identificador_paragem_viagem, identificador_paragem, identificador_viagem, hora_paragem):
+                print("Paragem de viagem adicionada com sucesso!")
+            else:
+                print("Falha ao adicionar paragem de viagem.")
+        
+        case "7":
+            estacoes = mf.listar_estacoes()
+            if estacoes:
+                print("Estações registadas:")
+                for estacao in estacoes:
+                    print("Código: " + estacao[0] + " | Nome: " + estacao[1] + " | Latitude: " + estacao[2] + " | Longitude: " + estacao[3])
+            else:
+                print("Nenhuma estação registada.")
+        
+        case "8":
+            carris = mf.listar_carris()
+            if carris:
+                print("Carris registados:")
+                for carril in carris:
+                    print("Código: " + carril[0] + " | Estação A: " + carril[1] + " | Estação B: " + carril[2] + " | Distância: " + carril[3] + " | Velocidade Máxima: " + carril[4])
+            else:
+                print("Nenhum carril registado.")
+        
+        case "9":
+            linhas = mf.listar_linhas()
+            if linhas:
+                print("Linhas registadas:")
+                for linha in linhas:
+                    codigo, nome, partida, chegada, tipo, paradas = linha
+                    print("Código: " + codigo + " | Nome: " + nome + " | Partida: " + partida + " | Chegada: " + chegada + " | Tipo de Serviço: " + tipo)
+                    if paradas:
+                        print("Paradas intermédias: " + ", ".join(paradas))
+            else:
+                print("Nenhuma linha registada.")
+        
+        case "10":
+            comboios = mf.listar_comboios()
+            if comboios:
+                print("Comboios registados:")
+                for comboio in comboios:
+                    print("Número de Série: " + comboio[0] + " | Modelo: " + comboio[1] + " | Velocidade Máxima: " + comboio[2] + " | Capacidade: " + comboio[3] + " | Tipo de Serviço: " + comboio[4])
+            else:
+                print("Nenhum comboio registado.")
+        
+        case "11":
+            codigo_linha = input("Código da Linha: ").strip().upper()
+            viagens = mf.listar_viagens_por_linha(codigo_linha)
+            if viagens:
+                print("Viagens registadas para a linha " + codigo_linha + ":")
+                for viagem in viagens:
+                    print("Identificador: " + viagem[0] + " | Código da Linha: " + viagem[1] + " | Número de Série do Comboio: " + viagem[2] + " | Hora de Partida: " + viagem[3] + " | Hora de Chegada: " + viagem[4] + " | Data: " + viagem[5] + "/" + viagem[6] + "/" + viagem[7] + " | Número de Passageiros: " + viagem[8])
+            else:
+                print("Nenhuma viagem registada para a linha " + codigo_linha + ".")
+        
+        case "12":
+            identificador_reserva_viagem = input("Identificador da Reserva de Viagem: ").strip()
+            identificador_viagem = input("Identificador da Viagem: ").strip()
+            nome_passageiro = input("Nome do Passageiro: ").strip()
+            lugar = input("Lugar: ").strip()
 
-    codlinha=input("Por favor insira o codigo desta linha: ")
-    count=0
-    dadoslist=[]
-    for i in dados:
-        dadoslist.append(dados[count].split(";"))
-        count=count+1
-
-    count=0
-    check=True
-    for i in dados:
-        print (dadoslist[count][0])
-        if dadoslist[count][0] == codlinha:
-            print("Código da linha já existe, por favor insira outro!")
-            check=False
+            if mf.adicionar_reserva_viagem(identificador_reserva_viagem, identificador_viagem, nome_passageiro, lugar):
+                print("Reserva de viagem adicionada com sucesso!")
+            else:
+                print("Falha ao adicionar reserva de viagem.")
+        
+        case "13":
+            identificador_viagem = input("Identificador da Viagem: ").strip()
+            if not mf.listar_horario_viagem(identificador_viagem):
+                print("Erro ao listar o horário da viagem.")
+        
+        case "0":
+            print("A encerrar o sistema. Até logo!")
             break
-        count=count+1
-    nomelinha=input("Por favor insira o nome desta linha: ")
-
-    quantests=quantests = int(input("Por favor insira quantas estações quer que façam parte desta linha: "))
-
-
-    ests=[]
-    listacarril=[]
-    listaestacao=[]
-
-    ficheiroest= open("tabela_estacoes.txt","r")
-    dadosest=ficheiroest.readlines()
-    ficheiroest.close()
-
-    ficheirocar= open("tabela_carril.txt","r")
-    dadoscar=ficheirocar.readlines()
-    ficheirocar.close()
-
-    count=0
-    for i in dadosest:
-        listaestacao.append(dadosest[count].split(";"))
-        count=count+1
-
-    count=0
-    for i in dadoscar:
-        listacarril.append(dadoscar[count].split(";"))
-        count=count+1
-
-    count=0
-
-    while count < quantests:  
-        estcheck = False
-        carrilcheck = False
-
-    
-        est = input(f"Por favor diga qual vai ser a {count + 1}ª estação: ").upper()
-
-   
-        for i in listaestacao:
-            if est == i[0]:
-                estcheck = True
-                break  
-
-    
-        for i in listacarril:
-       
-            if len(ests) == 0:
-                print(i)
-                if est == i[1] or est == i[2]:  
-                    carrilcheck = True
-                    break  
-
-            elif len(ests) > 0:
-                if est == i[1] or est == i[2]:  
-                    if est == listaestacao[len(ests)][0] or est == listaestacao[len(ests)][0]:
-                        carrilcheck = True
-                        break  
-
-    
-        if estcheck and carrilcheck:
-            ests.append(est)
-            count += 1  
-        else:
-            print("A estação que pediu não existe ou não tem ligações com outras estações!")
-
-    tiposervico=""
-    while (tiposervico != "U" and tiposervico!="R" and tiposervico!="I" and tiposervico!="A"):
-        tiposervico=input("Por favor insira o tipo de serviço (U, R, I ou A): ").upper()
-
-    my_functions.linha(codlinha,nomelinha,ests,tiposervico)
-
-#Tratar de criar uma viagem a seguir. depende de linha e comboio
+        
+        case _:
+            print("Opção inválida! Tente novamente.")

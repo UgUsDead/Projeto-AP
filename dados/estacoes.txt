@@ -1,0 +1,7 @@
+VLCD;Vila do Conde;001;003
+PRT;Porto;002;004
+LIS;Lisboa;003;005
+FAR;Faro;004;006
+BRG;Braga;005;007
+COI;Coimbra;006;008ARVR;Arvore;003;007
+TEST;Teste;0000;0000

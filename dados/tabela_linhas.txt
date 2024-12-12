@@ -1,2 +1,0 @@
-1;Norte;['TRIN', 'PCAM', 'BOLH', 'FANZ', 'CAMP'];R
-2;Aveiro;['AVEI', 'PCAM', 'BOLH'];A
