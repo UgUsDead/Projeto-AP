@@ -1,0 +1,79 @@
+1-main.py
+
+O main.py é o ponto de entrada principal do programa, ou seja, é o ficheiro que é executado para iniciar o sistema. Ele tem a função de iniciar o programa e permitir a 
+interação com o utilizador através do menu de opções.
+
+Este ficheiro contém:
+
+A lógica do programa, que apresenta um menu de opções e processa as escolhas do utilizador.
+
+Funções para chamar as operações de adicionar e listar dados, como adicionar estações, listar viagens, reservar lugares, etc.
+
+Responsabilidade por ler os ficheiros de dados (como estacoes.txt, carris.txt) no início e salvar qualquer alteração quando o programa termina.
+
+Em resumo, é o "cérebro" que coordena as operações principais do programa, garantindo que as funções necessárias sejam chamadas conforme as escolhas do utilizador.
+
+#-------------------------------------------------------------------------------------------------------------------------------------------------------------#
+
+2-my_functions.py
+
+O my_functions.py contém todas as funções auxiliares utilizadas para executar as operações principais do programa. Ele tem a responsabilidade de organizar e modularizar o código, 
+o que facilita a manutenção e o desenvolvimento do sistema.
+
+Este ficheiro inclui funções como:
+
+Adicionar uma nova estação.
+
+Adicionar um carril entre duas estações.
+
+Registrar um novo comboio.
+
+Listar as viagens registradas.
+
+Gerir reservas de lugares nos comboios.
+
+O my_functions.py é fundamental para evitar que o código no main.py se torne muito longo e confuso. Ele concentra a lógica das funcionalidades, enquanto o main.py 
+foca-se apenas na interação com o utilizador.
+
+Cada função presente no my_functions.py realiza uma tarefa específica que pode ser chamada diretamente pelo main.py. Este tipo de organização tornou o código 
+mais limpo e mais fácil de usar.
+
+#-------------------------------------------------------------------------------------------------------------------------------------------------------------#
+3-carris.txt
+Armazena as ligações entre as estações, incluindo o código da estação de origem, o código da estação de destino, a distância e a velocidade máxima permitida. 
+Usado para calcular as viagens possíveis entre as estações.
+
+
+4-estacoes.txt
+Contém a lista das estações registadas, com o código único da estação, nome e localização (latitude e longitude). 
+Usado para verificar e listar as estações no sistema.
+
+
+5-linhas.txt
+Armazena informações sobre as linhas de comboio, incluindo o código da linha, estações de partida e chegada, e estações intermediárias.
+Essencial para registrar as linhas de comboios e determinar as rotas e paragens.
+
+
+6-comboios.txt
+Contém os dados dos comboios, como número de série, modelo, velocidade máxima e capacidade. 
+Usado para verificar a disponibilidade de comboios e associar a viagens.
+
+
+7-viagens.txt
+Regista as viagens programadas, incluindo o código da viagem, código da linha, número do comboio, data e número de passageiros. 
+Usado para consultar viagens passadas ou futuras.
+
+
+8-reservas_viagens.txt
+Contém as reservas feitas para as viagens, incluindo código da viagem, número de passageiros e detalhes dos passageiros. 
+Usado para gerir reservas e verificar lugares disponíveis.
+
+
+9-paragens.txt
+Armazena as paragens das linhas de comboio, incluindo o código da linha e as estações de paragem. 
+Essencial para determinar as estações que o comboio vai atravessar ao longo do percurso.
+
+
+10-paragens_viagens.txt
+Contém as paragens de cada viagem específica, incluindo o código da viagem, a estação e o horário da paragem. 
+Usado para registrar as paragens programadas para cada viagem e o tempo de espera nas estações.
