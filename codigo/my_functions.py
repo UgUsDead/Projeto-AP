@@ -1,4 +1,6 @@
 import os
+import qrcode
+import folium 
 
 def caminho_ficheiro(nome_ficheiro):
     path = os.path.realpath(__file__)
@@ -9,8 +11,11 @@ def caminho_ficheiro(nome_ficheiro):
 
 # Estacoes
 def adicionar_estacao(codigo, nome, latitude, longitude):
-    if not validar_numero(latitude) or not validar_numero(longitude):
+    if validar_numero(latitude) == False or validar_numero(longitude) == False:
         print("Erro: Latitude e longitude devem ser números válidos.")
+        return
+    if estacao_existe(codigo):
+        print("Erro: Código da estação já existe.")
         return
     caminho = caminho_ficheiro("estacoes.txt")
     linha = codigo + ";" + nome + ";" + latitude + ";" + longitude + "\n"
@@ -18,17 +23,21 @@ def adicionar_estacao(codigo, nome, latitude, longitude):
     ficheiro.write(linha)
     ficheiro.close()
 
+
 def listar_estacoes():
     caminho = caminho_ficheiro("estacoes.txt")
-    if not os.path.exists(caminho):
-        return []
-    estacoes = []
-    ficheiro = open(caminho, "r")
-    linhas = ficheiro.readlines()
-    ficheiro.close()
-    for linha in linhas:
-        estacoes.append(linha.strip().split(";"))
-    return estacoes
+    if os.path.exists(caminho) == True:
+        estacoes = []
+        ficheiro = open(caminho, "r")
+        linhas = ficheiro.readlines()
+        ficheiro.close()
+        for linha in linhas:
+            partes = linha.strip().split(";")
+            if len(partes) == 4:  # Verificar se a linha está corretamente formatada
+                estacoes.append(partes)
+        return estacoes
+    return []
+
 
 def estacao_existe(codigo):
     estacoes = listar_estacoes()
@@ -39,8 +48,11 @@ def estacao_existe(codigo):
 
 # Carris
 def adicionar_carril(estacao_a, estacao_b, distancia, vel_max):
-    if not validar_numero(distancia) or not validar_numero(vel_max):
+    if validar_numero(distancia) == False or validar_numero(vel_max) == False:
         print("Erro: Distância e velocidade máxima devem ser números válidos.")
+        return
+    if estacao_existe(estacao_a) == False or estacao_existe(estacao_b) == False:
+        print("Erro: Ambas as estações devem existir.")
         return
     caminho = caminho_ficheiro("carris.txt")
     codigo_carril = estacao_a + "_" + estacao_b
@@ -49,17 +61,21 @@ def adicionar_carril(estacao_a, estacao_b, distancia, vel_max):
     ficheiro.write(linha)
     ficheiro.close()
 
+
 def listar_carris():
     caminho = caminho_ficheiro("carris.txt")
-    if not os.path.exists(caminho):
-        return []
-    carris = []
-    ficheiro = open(caminho, "r")
-    linhas = ficheiro.readlines()
-    ficheiro.close()
-    for linha in linhas:
-        carris.append(linha.strip().split(";"))
-    return carris
+    if os.path.exists(caminho) == True:
+        carris = []
+        ficheiro = open(caminho, "r")
+        linhas = ficheiro.readlines()
+        ficheiro.close()
+        for linha in linhas:
+            partes = linha.strip().split(";")
+            if len(partes) == 5:  # Verificar se a linha tem o número correto de campos
+                carris.append(partes)
+        return carris
+    return []
+
 
 def carril_existe(esta, estb):
     carril = listar_carris()
@@ -70,11 +86,14 @@ def carril_existe(esta, estb):
 
 # Linha
 def adicionar_linha(codigo_linha, nome, estacao_partida, estacao_chegada, tipo_servico):
-    if not estacao_existe(estacao_partida) or not estacao_existe(estacao_chegada):
+    if estacao_existe(estacao_partida) == False or estacao_existe(estacao_chegada) == False:
         print("Erro: Estações de partida ou chegada não existem.")
         return False
-    if not existe_caminho(estacao_partida, estacao_chegada):
+    if existe_caminho(estacao_partida, estacao_chegada) == False:
         print("Erro: Não há carris conectando as estações especificadas.")
+        return False
+    if linha_existe(codigo_linha):
+        print("Erro: Código da linha já existe.")
         return False
 
     # Obter o caminho entre as estações
@@ -284,15 +303,13 @@ def adicionar_reserva_viagem(identificador_reserva_viagem, identificador_viagem,
     viagens = listar_viagens()
     viagem_existe = False
     capacidade_maxima = 0
-    numero_passageiros = 0
     for viagem in viagens:
         if viagem[0] == identificador_viagem:
             viagem_existe = True
-            capacidade_maxima = int(viagem[8])
-            numero_passageiros = int(viagem[8])  # Corrigido para usar o índice correto
+            capacidade_maxima = int(viagem[8])  # Capacidade máxima da viagem
             break
     
-    if not viagem_existe:
+    if viagem_existe == False:
         print("Erro: Identificador da viagem não existe.")
         return False
     
@@ -301,6 +318,12 @@ def adicionar_reserva_viagem(identificador_reserva_viagem, identificador_viagem,
     if len(reservas) >= capacidade_maxima:
         print("Erro: Não há vagas suficientes na viagem.")
         return False
+
+    # Verificar se o lugar já está ocupado
+    for reserva in reservas:
+        if reserva[3] == lugar:
+            print("Erro: O lugar " + lugar + " já está reservado para esta viagem.")
+            return False
     
     # Adicionar a reserva
     caminho = caminho_ficheiro("reservas_viagem.txt")
@@ -309,6 +332,7 @@ def adicionar_reserva_viagem(identificador_reserva_viagem, identificador_viagem,
     ficheiro.write(linha)
     ficheiro.close()
     return True
+
 
 def listar_reservas_por_viagem(identificador_viagem):
     caminho = caminho_ficheiro("reservas_viagem.txt")
@@ -398,7 +422,6 @@ def listar_horario_viagem(identificador_viagem):
 
 # Conexoes
 def obter_conexoes():
-    """Cria um grafo com base nos carris disponíveis."""
     conexoes = {}
     carris = listar_carris()
     for carril in carris:
@@ -455,3 +478,51 @@ def validar_numero(valor):
         return True
     except ValueError:
         return False
+
+
+def codigo_qr(identificador_viagem,nome_passageiro,lugar):
+
+    identificador_viagem=str(identificador_viagem)
+    nome_passageiro=str(nome_passageiro)
+    lugar=str(lugar)
+    img = qrcode.make(identificador_viagem + ";\n" + nome_passageiro + ";\n" + lugar)
+    type(img)
+    img.save(nome_passageiro+".png")
+
+
+def mapa():
+    ests=listar_estacoes()
+    carris=listar_carris()
+
+    m = folium.Map(location=(38.736946, -9.142685), zoom_start=7)
+
+    for est in ests:
+        station_name = est[0]
+        city = est[1]
+        latitude = est[2]
+        longitude = est[3]
+        station_coords = {est[0]: (float(est[2]), float(est[3])) for est in ests}
+        # Add a marker to the map for each station
+        folium.Marker(
+            location=(latitude, longitude),
+            popup=f"{station_name}, {city}",
+            tooltip=station_name
+        ).add_to(m)
+
+        for carril in carris:
+            start_code = carril[1]  # Starting station code
+            end_code = carril[2]    # Ending station code
+
+            if start_code in station_coords and end_code in station_coords:
+                start_coords = station_coords[start_code]
+                end_coords = station_coords[end_code]
+
+                # Draw a line between the start and end stations
+                folium.PolyLine(
+                    locations=[start_coords, end_coords],
+                    color="blue",
+                    weight=2.5,
+                    opacity=0.8
+                ).add_to(m)
+
+    m.save("Mapa.html")
