@@ -1,0 +1,46 @@
+1-Adicionar Estação
+Permite adicionar uma nova estação ao sistema. O utilizador deve fornecer os dados pedidos como : nome, latitude e longitude. O código da estação deve ser único.
+
+2-Adicionar Carril
+Conecta duas estações com um carril (linha férrea), especificando a distância e a velocidade máxima. O utilizador deve fornecer os códigos das duas estações e as respectivas distâncias e velocidades.
+
+3-Adicionar Linha
+Cria uma nova linha de comboio, ligando duas estações (partida e chegada). O utilizador pode também adicionar estações intermediárias, caso haja mais de uma paragem entre estas duas estações.
+
+4-Adicionar Comboio
+Regista um comboio no sistema, fornecendo informações como número de série, modelo, velocidade máxima e capacidade. O número de série deve ser único.
+
+5-Adicionar Viagem
+Regista uma nova viagem, ligando uma linha a um comboio numa data específica, com número de passageiros. O utilizador deve garantir que a linha e o comboio existem.
+
+6-Adicionar Reserva de Viagem
+Permite reservar um lugar numa viagem. O número de passageiros não pode ultrapassar a capacidade do comboio.
+
+7-Listar Estações
+Mostra todas as estações que foram registadas até ao momento. É bom para ver as estações existentes no sistema.
+
+8-Listar Carris
+Exibe todos os carris registados, ou seja, as ligações entre as estações.
+
+9-Listar Linhas
+Exibe todas as linhas de comboio registadas, incluindo paragens intermediárias, se existirem.
+
+10-Listar Comboios
+Mostra todos os comboios registados.
+
+11-Listar Viagens
+Exibe todas as viagens registadas no sistema.
+
+12-Listar Reservas
+Mostra todas as reservas feitas para uma determinada viagem.
+
+13-Listar Horário de uma Viagem e Paragens
+Esta funcionalidade permite visualizar o horário de uma viagem específica, incluindo todas as paragens ao longo do percurso.
+
+14-Mostrar Mapa
+Abre um separador no google com um mapa centralizado em Portugal com as estações do programa.
+
+
+
+0-Sair
+Guess what it does :3
