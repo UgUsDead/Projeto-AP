@@ -43,4 +43,4 @@ Abre um separador no google com um mapa centralizado em Portugal com as estaçõ
 
 
 0-Sair
-Guess what it does :3
+Guess what it does :3 (sai do programa :3)
