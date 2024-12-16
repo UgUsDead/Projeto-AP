@@ -14,14 +14,12 @@ def adicionar_estacao(codigo, nome, latitude, longitude):
     if validar_numero(latitude) == False or validar_numero(longitude) == False:
         print("Erro: Latitude e longitude devem ser números válidos.")
         return
-    if estacao_existe(codigo):
-        print("Erro: Código da estação já existe.")
-        return
-    caminho = caminho_ficheiro("estacoes.txt")
-    linha = codigo + ";" + nome + ";" + latitude + ";" + longitude + "\n"
-    ficheiro = open(caminho, "a")
-    ficheiro.write(linha)
-    ficheiro.close()
+    else:
+        caminho = caminho_ficheiro("estacoes.txt")
+        linha = codigo + ";" + nome + ";" + latitude + ";" + longitude + "\n"
+        ficheiro = open(caminho, "a")
+        ficheiro.write(linha)
+        ficheiro.close()
 
 
 def listar_estacoes():
@@ -51,15 +49,13 @@ def adicionar_carril(estacao_a, estacao_b, distancia, vel_max):
     if validar_numero(distancia) == False or validar_numero(vel_max) == False:
         print("Erro: Distância e velocidade máxima devem ser números válidos.")
         return
-    if estacao_existe(estacao_a) == False or estacao_existe(estacao_b) == False:
-        print("Erro: Ambas as estações devem existir.")
-        return
-    caminho = caminho_ficheiro("carris.txt")
-    codigo_carril = estacao_a + "_" + estacao_b
-    linha = codigo_carril + ";" + estacao_a + ";" + estacao_b + ";" + distancia + ";" + vel_max + "\n"
-    ficheiro = open(caminho, "a")
-    ficheiro.write(linha)
-    ficheiro.close()
+    else:
+        caminho = caminho_ficheiro("carris.txt")
+        codigo_carril = estacao_a + "_" + estacao_b
+        linha = codigo_carril + ";" + estacao_a + ";" + estacao_b + ";" + distancia + ";" + vel_max + "\n"
+        ficheiro = open(caminho, "a")
+        ficheiro.write(linha)
+        ficheiro.close()
 
 
 def listar_carris():
@@ -303,16 +299,28 @@ def adicionar_reserva_viagem(identificador_reserva_viagem, identificador_viagem,
     viagens = listar_viagens()
     viagem_existe = False
     capacidade_maxima = 0
+    codigo_linha = ""
     for viagem in viagens:
         if viagem[0] == identificador_viagem:
             viagem_existe = True
             capacidade_maxima = int(viagem[8])  # Capacidade máxima da viagem
+            codigo_linha = viagem[1]  # Código da linha associada à viagem
             break
     
-    if viagem_existe == False:
+    if not viagem_existe:
         print("Erro: Identificador da viagem não existe.")
         return False
-    
+
+    # Verificar o tipo de serviço da linha associada à viagem
+    linhas = listar_linhas()
+    for linha in linhas:
+        if linha[0] == codigo_linha:
+            tipo_servico = linha[4]  # Tipo de serviço da linha
+            if tipo_servico == "U":
+                print("Erro: Reservas não são permitidas para viagens urbanas.")
+                return False
+            break
+
     # Verificar se há vagas suficientes
     reservas = listar_reservas_por_viagem(identificador_viagem)
     if len(reservas) >= capacidade_maxima:
@@ -324,7 +332,7 @@ def adicionar_reserva_viagem(identificador_reserva_viagem, identificador_viagem,
         if reserva[3] == lugar:
             print("Erro: O lugar " + lugar + " já está reservado para esta viagem.")
             return False
-    
+
     # Adicionar a reserva
     caminho = caminho_ficheiro("reservas_viagem.txt")
     linha = identificador_reserva_viagem + ";" + identificador_viagem + ";" + nome_passageiro + ";" + lugar + "\n"
@@ -332,6 +340,7 @@ def adicionar_reserva_viagem(identificador_reserva_viagem, identificador_viagem,
     ficheiro.write(linha)
     ficheiro.close()
     return True
+
 
 
 def listar_reservas_por_viagem(identificador_viagem):
@@ -434,7 +443,7 @@ def obter_conexoes():
         conexoes[estacao_b].append(estacao_a)
     return conexoes
 
-def existe_caminho(estacao_a, estacao_b):
+def existe_caminho(estacao_a, estacao_b):  #https://www.youtube.com/watch?v=HZ5YTanv5QE (Explicação do nosso algoritmo de procura (não é dijkstras é BFS))
     #Algoritmo de procura de caminho mais curto
     conexoes = obter_conexoes()
     if estacao_a not in conexoes or estacao_b not in conexoes:
@@ -487,7 +496,7 @@ def codigo_qr(identificador_viagem,nome_passageiro,lugar):
     lugar=str(lugar)
     img = qrcode.make(identificador_viagem + ";\n" + nome_passageiro + ";\n" + lugar)
     type(img)
-    img.save(nome_passageiro+".png")
+    img.save(identificador_viagem + "_" + nome_passageiro + "_" + lugar + ".png")
 
 
 def mapa():
