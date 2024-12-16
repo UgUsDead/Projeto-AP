@@ -1,3 +1,5 @@
+#-------------------------------------------------------------------------------------------------------------------------------------------------------------#
+                                                                               PASTA CÓDIGO
 1-main.py
 
 O main.py é o ponto de entrada principal do programa, ou seja, é o ficheiro que é executado para iniciar o sistema. Ele tem a função de iniciar o programa e permitir a 
@@ -13,7 +15,6 @@ Responsabilidade por ler os ficheiros de dados (como estacoes.txt, carris.txt) n
 
 Em resumo, é o "cérebro" que coordena as operações principais do programa, garantindo que as funções necessárias sejam chamadas conforme as escolhas do utilizador.
 
-#-------------------------------------------------------------------------------------------------------------------------------------------------------------#
 
 2-my_functions.py
 
@@ -39,6 +40,8 @@ Cada função presente no my_functions.py realiza uma tarefa específica que pod
 mais limpo e mais fácil de usar.
 
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------#
+                                                                            PASTA DADOS
+
 3-carris.txt
 Armazena as ligações entre as estações, incluindo o código da estação de origem, o código da estação de destino, a distância e a velocidade máxima permitida. 
 Usado para calcular as viagens possíveis entre as estações.
@@ -77,3 +80,11 @@ Essencial para determinar as estações que o comboio vai atravessar ao longo do
 10-paragens_viagens.txt
 Contém as paragens de cada viagem específica, incluindo o código da viagem, a estação e o horário da paragem. 
 Usado para registrar as paragens programadas para cada viagem e o tempo de espera nas estações.
+
+#-------------------------------------------------------------------------------------------------------------------------------------------------------------#
+                                                                        FORA DE PASTA ESPECÍFICA
+11- Mapa 
+Mostra o mapa numa página do google, centralizado já em Portugal, com as estações criadas no programa.
+
+12- QR code (depois de gerado)
+Cria um QR code para ter acesso aos dados da viagem

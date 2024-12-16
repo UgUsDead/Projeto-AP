@@ -37,5 +37,10 @@ Mostra todas as reservas feitas para uma determinada viagem.
 13-Listar Horário de uma Viagem e Paragens
 Esta funcionalidade permite visualizar o horário de uma viagem específica, incluindo todas as paragens ao longo do percurso.
 
+14-Mostrar Mapa
+Abre um separador no google com um mapa centralizado em Portugal com as estações do programa.
+
+
+
 0-Sair
 Guess what it does :3
