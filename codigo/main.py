@@ -6,22 +6,27 @@ import random
 
 
 def menu_principal():
-    print("Bem-vindo ao Sistema de Gestão Ferroviária!")
-    print("1. Adicionar Estação")
-    print("2. Adicionar Carril")
-    print("3. Adicionar Linha")
-    print("4. Adicionar Comboio")
-    print("5. Adicionar Viagem")
-    print("6. Adicionar Paragem de Viagem")
-    print("7. Listar Estações")
-    print("8. Listar Carris")
-    print("9. Listar Linhas")
-    print("10. Listar Comboios")
-    print("11. Listar Viagens por Linha")
-    print("12. Adicionar Reserva de Viagem")
-    print("13. Listar Horário de uma Viagem e suas Paragens")
-    print("14. Mostrar Mapa")
-    print("0. Sair")
+    print('''  
+╔════════════════════════════════════════════════════╗
+║        Bem-vindo ao Sistema de Gestão Ferroviária!  ║
+╠════════════════════════════════════════════════════╣
+║  1. Adicionar Estação                             ║
+║  2. Adicionar Carril                              ║
+║  3. Adicionar Linha                               ║
+║  4. Adicionar Comboio                             ║
+║  5. Adicionar Viagem                              ║
+║  6. Adicionar Paragem de Viagem                   ║
+║  7. Listar Estações                               ║
+║  8. Listar Carris                                 ║
+║  9. Listar Linhas                                 ║
+║ 10. Listar Comboios                               ║
+║ 11. Listar Viagens por Linha                      ║
+║ 12. Adicionar Reserva de Viagem                   ║
+║ 13. Listar Horário de uma Viagem e suas Paragens  ║
+║ 14. Mostrar Mapa                                  ║
+║  0. Sair                                          ║
+╚════════════════════════════════════════════════════╝
+''')
 
 greve=random.randint(1,10)
 if greve!=10:
