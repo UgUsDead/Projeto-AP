@@ -3,15 +3,13 @@ import qrcode
 import folium 
 
 def caminho_ficheiro(nome_ficheiro):
-    #Vau 
+    #Buscar o path do ficheiro. Dados e codigo
     path = os.path.realpath(__file__)
-    print(path)
     dir = os.path.dirname(path).replace("codigo", "dados")
-    if not os.path.exists(dir):
+    if os.path.exists(dir)== False:
         os.makedirs(dir)  # Certifique-se de que o diretório "dados" exista
     return os.path.join(dir, nome_ficheiro)
 
-# Estacoes
 def adicionar_estacao(codigo, nome, latitude, longitude):
     if validar_numero(latitude) == False or validar_numero(longitude) == False:
         print("Erro: Latitude e longitude devem ser números válidos.")
@@ -22,29 +20,6 @@ def adicionar_estacao(codigo, nome, latitude, longitude):
         ficheiro = open(caminho, "a")
         ficheiro.write(linha)
         ficheiro.close()
-
-
-def listar_estacoes():
-    caminho = caminho_ficheiro("estacoes.txt")
-    if os.path.exists(caminho) == True:
-        estacoes = []
-        ficheiro = open(caminho, "r")
-        linhas = ficheiro.readlines()
-        ficheiro.close()
-        for linha in linhas:
-            partes = linha.strip().split(";")
-            if len(partes) == 4:  # Verificar se a linha está corretamente formatada
-                estacoes.append(partes)
-        return estacoes
-    return []
-
-
-def estacao_existe(codigo):
-    estacoes = listar_estacoes()
-    for estacao in estacoes:
-        if estacao[0] == codigo:
-            return True
-    return False
 
 # Carris
 def adicionar_carril(estacao_a, estacao_b, distancia, vel_max):
@@ -58,29 +33,6 @@ def adicionar_carril(estacao_a, estacao_b, distancia, vel_max):
         ficheiro = open(caminho, "a")
         ficheiro.write(linha)
         ficheiro.close()
-
-
-def listar_carris():
-    caminho = caminho_ficheiro("carris.txt")
-    if os.path.exists(caminho) == True:
-        carris = []
-        ficheiro = open(caminho, "r")
-        linhas = ficheiro.readlines()
-        ficheiro.close()
-        for linha in linhas:
-            partes = linha.strip().split(";")
-            if len(partes) == 5:  # Verificar se a linha tem o número correto de campos
-                carris.append(partes)
-        return carris
-    return []
-
-
-def carril_existe(esta, estb):
-    carril = listar_carris()
-    for carris in carril:
-        if carris[0] == esta + "_" + estb:
-            return True
-    return False
 
 # Linha
 def adicionar_linha(codigo_linha, nome, estacao_partida, estacao_chegada, tipo_servico):
@@ -124,47 +76,6 @@ def adicionar_linha(codigo_linha, nome, estacao_partida, estacao_chegada, tipo_s
 
     return True
 
-def listar_linhas():
-    caminho = caminho_ficheiro("linhas.txt")
-    if not os.path.exists(caminho):
-        return []
-    linhas = []
-    ficheiro = open(caminho, "r")
-    conteudo = ficheiro.readlines()
-    ficheiro.close()
-
-    # Read paragens from paragens.txt
-    caminho_paragens = caminho_ficheiro("paragens.txt")
-    paragens_dict = {}
-    if os.path.exists(caminho_paragens):
-        ficheiro_paragens = open(caminho_paragens, "r")
-        for linha in ficheiro_paragens:
-            partes = linha.strip().split(";")
-            codigo_linha = partes[1]
-            parada = partes[2]
-            if codigo_linha not in paragens_dict:
-                paragens_dict[codigo_linha] = []
-            paragens_dict[codigo_linha].append(parada)
-        ficheiro_paragens.close()
-
-    for linha in conteudo:
-        partes = linha.strip().split(";")
-        codigo_linha = partes[0]
-        nome = partes[1]
-        estacao_partida = partes[2]
-        estacao_chegada = partes[3]
-        tipo_servico = partes[4]
-        paradas = paragens_dict.get(codigo_linha, [])
-        linhas.append((codigo_linha, nome, estacao_partida, estacao_chegada, tipo_servico, paradas))
-    return linhas
-
-def linha_existe(codlin):
-    linhas = listar_linhas()
-    for linha in linhas:
-        if linha[0] == codlin:
-            return True
-    return False
-
 # Comboios
 def adicionar_comboio(numero_serie, modelo, vel_max, capacidade, tipo_servico):
     if not numero_serie.isdigit() or len(numero_serie) != 5:
@@ -189,18 +100,6 @@ def adicionar_comboio(numero_serie, modelo, vel_max, capacidade, tipo_servico):
     ficheiro.write(linha)
     ficheiro.close()
     return True
-
-def listar_comboios():
-    caminho = caminho_ficheiro("comboios.txt")
-    if not os.path.exists(caminho):
-        return []
-    comboios = []
-    ficheiro = open(caminho, "r")
-    linhas = ficheiro.readlines()
-    ficheiro.close()
-    for linha in linhas:
-        comboios.append(linha.strip().split(";"))
-    return comboios
 
 # Viagens
 def adicionar_viagem(identificador_viagem, codigo_linha, numero_serie_comboio, hora_partida, hora_chegada, dia, mes, ano, numero_passageiros):
@@ -260,20 +159,6 @@ def adicionar_viagem(identificador_viagem, codigo_linha, numero_serie_comboio, h
 
     return True
 
-def listar_viagens_por_linha(codigo_linha):
-    caminho = caminho_ficheiro("viagens.txt")
-    if not os.path.exists(caminho):
-        return []
-    viagens = []
-    ficheiro = open(caminho, "r")
-    linhas = ficheiro.readlines()
-    ficheiro.close()
-    for linha in linhas:
-        partes = linha.strip().split(";")
-        if partes[1] == codigo_linha:
-            viagens.append(partes)
-    return viagens
-
 def adicionar_paragem_viagem(identificador_paragem_viagem, identificador_paragem, identificador_viagem, hora_paragem):
     caminho = caminho_ficheiro("paragens_viagem.txt")
     linha = identificador_paragem_viagem + ";" + identificador_paragem + ";" + identificador_viagem + ";" + hora_paragem + "\n"
@@ -281,20 +166,6 @@ def adicionar_paragem_viagem(identificador_paragem_viagem, identificador_paragem
     ficheiro.write(linha)
     ficheiro.close()
     return True
-
-def listar_paragens_por_linha(codigo_linha):
-    caminho = caminho_ficheiro("paragens.txt")
-    if not os.path.exists(caminho):
-        return []
-    paragens = []
-    ficheiro = open(caminho, "r")
-    linhas = ficheiro.readlines()
-    ficheiro.close()
-    for linha in linhas:
-        partes = linha.strip().split(";")
-        if partes[1] == codigo_linha:
-            paragens.append(partes)
-    return paragens
 
 def adicionar_reserva_viagem(identificador_reserva_viagem, identificador_viagem, nome_passageiro, lugar):
     # Verificar se a viagem existe
@@ -343,7 +214,119 @@ def adicionar_reserva_viagem(identificador_reserva_viagem, identificador_viagem,
     ficheiro.close()
     return True
 
+def listar_estacoes():
+    caminho = caminho_ficheiro("estacoes.txt")
+    if os.path.exists(caminho) == True:
+        estacoes = []
+        ficheiro = open(caminho, "r")
+        linhas = ficheiro.readlines()
+        ficheiro.close()
+        for linha in linhas:
+            partes = linha.strip().split(";")
+            if len(partes) == 4:  # Verificar se a linha está corretamente formatada
+                estacoes.append(partes)
+        return estacoes
+    return []
 
+def listar_carris():
+    caminho = caminho_ficheiro("carris.txt")
+    if os.path.exists(caminho) == True:
+        carris = []
+        ficheiro = open(caminho, "r")
+        linhas = ficheiro.readlines()
+        ficheiro.close()
+        for linha in linhas:
+            partes = linha.strip().split(";")
+            if len(partes) == 5:  # Verificar se a linha tem o número correto de campos
+                carris.append(partes)
+        return carris
+    return []
+
+def listar_linhas():
+    caminho = caminho_ficheiro("linhas.txt")
+    if not os.path.exists(caminho):
+        return []
+    linhas = []
+    ficheiro = open(caminho, "r")
+    conteudo = ficheiro.readlines()
+    ficheiro.close()
+
+    # Read paragens from paragens.txt
+    caminho_paragens = caminho_ficheiro("paragens.txt")
+    paragens_dict = {}
+    if os.path.exists(caminho_paragens):
+        ficheiro_paragens = open(caminho_paragens, "r")
+        for linha in ficheiro_paragens:
+            partes = linha.strip().split(";")
+            codigo_linha = partes[1]
+            parada = partes[2]
+            if codigo_linha not in paragens_dict:
+                paragens_dict[codigo_linha] = []
+            paragens_dict[codigo_linha].append(parada)
+        ficheiro_paragens.close()
+
+    for linha in conteudo:
+        partes = linha.strip().split(";")
+        codigo_linha = partes[0]
+        nome = partes[1]
+        estacao_partida = partes[2]
+        estacao_chegada = partes[3]
+        tipo_servico = partes[4]
+        paradas = paragens_dict.get(codigo_linha, [])
+        linhas.append((codigo_linha, nome, estacao_partida, estacao_chegada, tipo_servico, paradas))
+    return linhas
+
+def listar_comboios():
+    caminho = caminho_ficheiro("comboios.txt")
+    if not os.path.exists(caminho):
+        return []
+    comboios = []
+    ficheiro = open(caminho, "r")
+    linhas = ficheiro.readlines()
+    ficheiro.close()
+    for linha in linhas:
+        comboios.append(linha.strip().split(";"))
+    return comboios
+
+def listar_viagens():
+    caminho = caminho_ficheiro("viagens.txt")
+    if not os.path.exists(caminho):
+        return []
+    viagens = []
+    ficheiro = open(caminho, "r")
+    linhas = ficheiro.readlines()
+    ficheiro.close()
+    for linha in linhas:
+        viagens.append(linha.strip().split(";"))
+    return viagens
+
+def listar_viagens_por_linha(codigo_linha):
+    caminho = caminho_ficheiro("viagens.txt")
+    if not os.path.exists(caminho):
+        return []
+    viagens = []
+    ficheiro = open(caminho, "r")
+    linhas = ficheiro.readlines()
+    ficheiro.close()
+    for linha in linhas:
+        partes = linha.strip().split(";")
+        if partes[1] == codigo_linha:
+            viagens.append(partes)
+    return viagens
+
+def listar_paragens_por_linha(codigo_linha):
+    caminho = caminho_ficheiro("paragens.txt")
+    if not os.path.exists(caminho):
+        return []
+    paragens = []
+    ficheiro = open(caminho, "r")
+    linhas = ficheiro.readlines()
+    ficheiro.close()
+    for linha in linhas:
+        partes = linha.strip().split(";")
+        if partes[1] == codigo_linha:
+            paragens.append(partes)
+    return paragens
 
 def listar_reservas_por_viagem(identificador_viagem):
     caminho = caminho_ficheiro("reservas_viagem.txt")
@@ -358,18 +341,6 @@ def listar_reservas_por_viagem(identificador_viagem):
         if partes[1] == identificador_viagem:
             reservas.append(partes)
     return reservas
-
-def listar_viagens():
-    caminho = caminho_ficheiro("viagens.txt")
-    if not os.path.exists(caminho):
-        return []
-    viagens = []
-    ficheiro = open(caminho, "r")
-    linhas = ficheiro.readlines()
-    ficheiro.close()
-    for linha in linhas:
-        viagens.append(linha.strip().split(";"))
-    return viagens
 
 def listar_horario_viagem(identificador_viagem):
     caminho_viagens = caminho_ficheiro("viagens.txt")
@@ -431,19 +402,26 @@ def listar_horario_viagem(identificador_viagem):
     
     return True
 
-# Conexoes
-def obter_conexoes():
-    conexoes = {}
-    carris = listar_carris()
-    for carril in carris:
-        estacao_a, estacao_b = carril[1], carril[2]
-        if estacao_a not in conexoes:
-            conexoes[estacao_a] = []
-        if estacao_b not in conexoes:
-            conexoes[estacao_b] = []
-        conexoes[estacao_a].append(estacao_b)
-        conexoes[estacao_b].append(estacao_a)
-    return conexoes
+def estacao_existe(codigo):
+    estacoes = listar_estacoes()
+    for estacao in estacoes:
+        if estacao[0] == codigo:
+            return True
+    return False
+
+def carril_existe(esta, estb):
+    carril = listar_carris()
+    for carris in carril:
+        if carris[0] == esta + "_" + estb:
+            return True
+    return False
+
+def linha_existe(codlin):
+    linhas = listar_linhas()
+    for linha in linhas:
+        if linha[0] == codlin:
+            return True
+    return False
 
 def existe_caminho(estacao_a, estacao_b):  #https://www.youtube.com/watch?v=HZ5YTanv5QE (Explicação do nosso algoritmo de procura (não é dijkstras é BFS))
     #Algoritmo de procura de caminho mais curto
@@ -463,44 +441,6 @@ def existe_caminho(estacao_a, estacao_b):  #https://www.youtube.com/watch?v=HZ5Y
             visitados.add(atual)
             fila.extend(conexoes[atual])
     return False
-
-def obter_caminho(estacao_a, estacao_b):
-    conexoes = obter_conexoes()
-    fila = [(estacao_a, [estacao_a])]
-    visitados = set()
-
-    while fila:
-        (atual, caminho) = fila.pop(0)
-        if atual in visitados:
-            continue
-        visitados.add(atual)
-        for proximo in conexoes.get(atual, []):
-            if proximo in visitados:
-                continue
-            if proximo == estacao_b:
-                return caminho + [proximo]
-            else:
-                fila.append((proximo, caminho + [proximo]))
-    return []
-
-# Validations
-def validar_numero(valor):
-    try:
-        float(valor)
-        return True
-    except ValueError:
-        return False
-
-
-def codigo_qr(identificador_viagem,nome_passageiro,lugar):
-
-    identificador_viagem=str(identificador_viagem)
-    nome_passageiro=str(nome_passageiro)
-    lugar=str(lugar)
-    img = qrcode.make(identificador_viagem + ";\n" + nome_passageiro + ";\n" + lugar)
-    type(img)
-    img.save(identificador_viagem + "_" + nome_passageiro + "_" + lugar + ".png")
-
 
 def mapa():
     ests=listar_estacoes()
@@ -538,3 +478,51 @@ def mapa():
                 ).add_to(m)
 
     m.save("Mapa.html")
+
+def codigo_qr(identificador_viagem,nome_passageiro,lugar):
+
+    identificador_viagem=str(identificador_viagem)
+    nome_passageiro=str(nome_passageiro)
+    lugar=str(lugar)
+    img = qrcode.make(identificador_viagem + ";\n" + nome_passageiro + ";\n" + lugar)
+    type(img)
+    img.save(identificador_viagem + "_" + nome_passageiro + "_" + lugar + ".png")
+
+def obter_conexoes():
+    conexoes = {}
+    carris = listar_carris()
+    for carril in carris:
+        estacao_a, estacao_b = carril[1], carril[2]
+        if estacao_a not in conexoes:
+            conexoes[estacao_a] = []
+        if estacao_b not in conexoes:
+            conexoes[estacao_b] = []
+        conexoes[estacao_a].append(estacao_b)
+        conexoes[estacao_b].append(estacao_a)
+    return conexoes
+
+def obter_caminho(estacao_a, estacao_b):
+    conexoes = obter_conexoes()
+    fila = [(estacao_a, [estacao_a])]
+    visitados = set()
+
+    while fila:
+        (atual, caminho) = fila.pop(0)
+        if atual in visitados:
+            continue
+        visitados.add(atual)
+        for proximo in conexoes.get(atual, []):
+            if proximo in visitados:
+                continue
+            if proximo == estacao_b:
+                return caminho + [proximo]
+            else:
+                fila.append((proximo, caminho + [proximo]))
+    return []
+
+def validar_numero(valor):
+    try:
+        float(valor)
+        return True
+    except ValueError:
+        return False
