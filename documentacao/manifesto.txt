@@ -83,7 +83,7 @@ Usado para registrar as paragens programadas para cada viagem e o tempo de esper
 
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------#
                                                                         FORA DE PASTA ESPECÍFICA
-11- Mapa 
+11- Mapa (depois de gerado)
 Mostra o mapa numa página do google, centralizado já em Portugal, com as estações criadas no programa.
 
 12- QR code (depois de gerado)
