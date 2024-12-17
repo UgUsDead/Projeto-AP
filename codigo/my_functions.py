@@ -400,14 +400,13 @@ def listar_horario_viagem(identificador_viagem):
                 paragens_viagem.append(partes[1])  # Store stop names
 
     # Exibir informações da viagem
-    print("Horário da Viagem:")
-    print("Identificador: {}".format(viagem_encontrada[0]))
-    print("Código da Linha: {}".format(viagem_encontrada[1]))
-    print("Número de Série do Comboio: {}".format(viagem_encontrada[2]))
-    print("Hora de Partida: {}".format(viagem_encontrada[3]))
-    print("Hora de Chegada: {}".format(viagem_encontrada[4]))
-    print("Data: {}/{}/{}".format(viagem_encontrada[5], viagem_encontrada[6], viagem_encontrada[7]))
-    print("Número de Passageiros: {}".format(viagem_encontrada[8]))
+    print("Identificador: "+viagem_encontrada[0])
+    print("Código da Linha: "+viagem_encontrada[1])
+    print("Número de Série do Comboio: "+viagem_encontrada[2])
+    print("Hora de Partida: "+viagem_encontrada[3])
+    print("Hora de Chegada: "+viagem_encontrada[4])
+    print("Data: "+viagem_encontrada[5]+"/"+viagem_encontrada[6]+"/" +viagem_encontrada[7])
+    print("Número de Passageiros: "+viagem_encontrada[8])
 
     # Exibir paragens da viagem
     if paragens_viagem:
