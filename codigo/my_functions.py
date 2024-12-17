@@ -110,7 +110,7 @@ def adicionar_viagem(identificador_viagem, codigo_linha, numero_serie_comboio, h
     if validar_numero(numero_passageiros)==False:
         print("Erro: Número de passageiros deve ser um número válido.")
         return False
-    if validar_data(dia,mes,ano)==True:
+    if validar_data(dia,mes,ano)==False:
         print("Erro: Dia, mês e ano devem ser números válidos.")
         return False
     
@@ -522,6 +522,9 @@ def validar_numero(valor):
         return False
 
 def validar_data(dia, mes, ano):
+    dia = int(dia)
+    mes = int(mes)
+    ano = int(ano)
     # Verificar se o mês é válido
     if mes < 1 or mes > 12:
         return False

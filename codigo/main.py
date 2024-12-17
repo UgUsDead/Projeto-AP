@@ -119,9 +119,7 @@ if greve!=10:
                     print("Viagem adicionada com sucesso!")
                 else:
                     print("Falha ao adicionar viagem.")
-            
-            
-            
+
             case "7":
                 estacoes = mf.listar_estacoes()
                 if estacoes:
