@@ -58,5 +58,8 @@ Abre um separador no google com um mapa centralizado em Portugal com as estaçõ
 Permite procurar por um comboio através do seu número de série ou pela quantidade máxima de passageiros. Se o utilizador escolher segunda opção
 vão ser listados todos os comboios com o número igual e menor ao que o utilizador introduzir.
 
+15-Procurar linhas a partir de estação
+Permite procurar as linhas existentes a partir de uma estação fornecida. 
+
 0-Sair
 Guess what it does :3 (sai do programa :3)
