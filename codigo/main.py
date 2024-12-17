@@ -11,15 +11,14 @@ def menu_principal():
 ║  3. Adicionar Linha                               ║
 ║  4. Adicionar Comboio                             ║
 ║  5. Adicionar Viagem                              ║
-║  6. Adicionar Paragem de Viagem                   ║
-║  7. Listar Estações                               ║
-║  8. Listar Carris                                 ║
-║  9. Listar Linhas                                 ║
-║ 10. Listar Comboios                               ║
-║ 11. Listar Viagens por Linha                      ║
-║ 12. Adicionar Reserva de Viagem                   ║
-║ 13. Listar Horário de uma Viagem e suas Paragens  ║
-║ 14. Mostrar Mapa                                  ║
+║  6. Listar Estações                               ║
+║  7. Listar Carris                                 ║
+║  8. Listar Linhas                                 ║
+║  9. Listar Comboios                               ║
+║ 10. Listar Viagens por Linha                      ║
+║ 11. Adicionar Reserva de Viagem                   ║
+║ 12. Listar Horário de uma Viagem e suas Paragens  ║
+║ 13. Mostrar Mapa                                  ║
 ║  0. Sair                                          ║
 ╚═══════════════════════════════════════════════════╝
 ''')
@@ -120,7 +119,7 @@ if greve!=10:
                 else:
                     print("Falha ao adicionar viagem.")
 
-            case "7":
+            case "6":
                 estacoes = mf.listar_estacoes()
                 if estacoes:
                     print("Estações registadas:")
@@ -129,7 +128,7 @@ if greve!=10:
                 else:
                     print("Nenhuma estação registada.")
             
-            case "8":
+            case "7":
                 carris = mf.listar_carris()
                 if carris:
                     print("Carris registados:")
@@ -138,7 +137,7 @@ if greve!=10:
                 else:
                     print("Nenhum carril registado.")
             
-            case "9":
+            case "8":
                 linhas = mf.listar_linhas()
                 if linhas:
                     print("Linhas registadas:")
@@ -150,7 +149,7 @@ if greve!=10:
                 else:
                     print("Nenhuma linha registada.")
             
-            case "10":
+            case "9":
                 comboios = mf.listar_comboios()
                 if comboios:
                     print("Comboios registados:")
@@ -159,7 +158,7 @@ if greve!=10:
                 else:
                     print("Nenhum comboio registado.")
             
-            case "11":
+            case "10":
                 codigo_linha = input("Código da Linha: ").strip().upper()
                 viagens = mf.listar_viagens_por_linha(codigo_linha)
                 if viagens:
@@ -169,7 +168,7 @@ if greve!=10:
                 else:
                     print("Nenhuma viagem registada para a linha " + codigo_linha + ".")
             
-            case "12":
+            case "11":
                 identificador_reserva_viagem = input("Identificador da Reserva de Viagem: ").strip()
                 identificador_viagem = input("Identificador da Viagem: ").strip()
                 nome_passageiro = input("Nome do Passageiro: ").strip()
@@ -182,12 +181,12 @@ if greve!=10:
                 else:
                     print("Falha ao adicionar reserva de viagem.")
             
-            case "13":
+            case "12":
                 identificador_viagem = input("Identificador da Viagem: ").strip()
                 if mf.listar_horario_viagem(identificador_viagem)==False:
                     print("Erro ao listar o horário da viagem.")
 
-            case "14":
+            case "13":
                 mf.mapa()
                 print("Mapa impresso com sucesso!")
             
@@ -198,7 +197,7 @@ if greve!=10:
             case _:
                 print("Opção inválida! Tente novamente.")
 
-        if opcao not in [str(i) for i in range(15)]:
+        if opcao not in [str(i) for i in range(15)]: 
             print("Opção inválida! Tente novamente.")
 else:
     print("A CP hoje está de greve. Pedimos desculpa por qualquer incomodo que esta situação possa ter causado :c")

@@ -153,8 +153,8 @@ def adicionar_viagem(identificador_viagem, codigo_linha, numero_serie_comboio, h
     paragens = listar_paragens_por_linha(codigo_linha)
     caminho_paragens_viagem = caminho_ficheiro("paragens_viagem.txt")
     ficheiro_paragens_viagem = open(caminho_paragens_viagem, "a")
-    for i, paragem in enumerate(paragens):
-        identificador_paragem_viagem = f"PV{identificador_viagem}_{i+1}"
+    for paragem in paragens:
+        identificador_paragem_viagem = "PV" + str(identificador_viagem) + "_" + str(paragens.index(paragem) + 1)
         ficheiro_paragens_viagem.write(identificador_paragem_viagem + ";" + paragem[0] + ";" + identificador_viagem + ";" + hora_partida + "\n")
     ficheiro_paragens_viagem.close()
 
