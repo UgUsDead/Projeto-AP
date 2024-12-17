@@ -3,11 +3,10 @@ import qrcode
 import folium 
 
 def caminho_ficheiro(nome_ficheiro):
-    #Vau 
+    #Buscar o path do ficheiro. Dados e codigo
     path = os.path.realpath(__file__)
-    print(path)
     dir = os.path.dirname(path).replace("codigo", "dados")
-    if not os.path.exists(dir):
+    if os.path.exists(dir)== False:
         os.makedirs(dir)  # Certifique-se de que o diretório "dados" exista
     return os.path.join(dir, nome_ficheiro)
 
