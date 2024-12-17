@@ -13,7 +13,7 @@ Funções para chamar as operações de adicionar e listar dados, como adicionar
 
 Responsabilidade por ler os ficheiros de dados (como estacoes.txt, carris.txt) no início e salvar qualquer alteração quando o programa termina.
 
-Em resumo, é o "cérebro" que coordena as operações principais do programa, garantindo que as funções necessárias sejam chamadas conforme as escolhas do utilizador.
+Em resumo, é o "cérebro" do programa que garante que as funções necessárias sejam chamadas conforme as escolhas do utilizador.
 
 
 2-my_functions.py
