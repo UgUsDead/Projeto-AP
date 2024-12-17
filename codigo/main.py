@@ -240,8 +240,7 @@ if greve!=10:
                 print("A encerrar o sistema. Até logo!")
                 break
             
-            case _:
-                print("Opção inválida! Tente novamente.")
+            
 
         if opcao not in [str(i) for i in range(15)]: 
             print("Opção inválida! Tente novamente.")
