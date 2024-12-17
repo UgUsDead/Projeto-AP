@@ -11,6 +11,7 @@ def caminho_ficheiro(nome_ficheiro):
     return os.path.join(dir, nome_ficheiro)
 
 def adicionar_estacao(codigo, nome, latitude, longitude):
+    
     if validar_numero(latitude) == False or validar_numero(longitude) == False:
         print("Erro: Latitude e longitude devem ser números válidos.")
         return
@@ -78,10 +79,10 @@ def adicionar_linha(codigo_linha, nome, estacao_partida, estacao_chegada, tipo_s
 
 # Comboios
 def adicionar_comboio(numero_serie, modelo, vel_max, capacidade, tipo_servico):
-    if not numero_serie.isdigit() or len(numero_serie) != 5:
+    if numero_serie.isdigit()==False or len(numero_serie) != 5:
         print("Erro: Número de série deve ser um número válido com 5 dígitos.")
         return False
-    if not validar_numero(vel_max) or not validar_numero(capacidade):
+    if validar_numero(vel_max)==False or validar_numero(capacidade)==False:
         print("Erro: Velocidade máxima e capacidade devem ser números válidos.")
         return False
     if tipo_servico not in ["U", "R", "I", "A"]:
@@ -103,13 +104,13 @@ def adicionar_comboio(numero_serie, modelo, vel_max, capacidade, tipo_servico):
 
 # Viagens
 def adicionar_viagem(identificador_viagem, codigo_linha, numero_serie_comboio, hora_partida, hora_chegada, dia, mes, ano, numero_passageiros):
-    if not validar_numero(identificador_viagem):
+    if validar_numero(identificador_viagem)==False:
         print("Erro: Identificador da viagem deve ser um número válido.")
         return False
-    if not validar_numero(numero_passageiros):
+    if validar_numero(numero_passageiros)==False:
         print("Erro: Número de passageiros deve ser um número válido.")
         return False
-    if not validar_numero(dia) or not validar_numero(mes) or not validar_numero(ano):
+    if validar_numero(dia)==False or validar_numero(mes)==False or validar_numero(ano)==False:
         print("Erro: Dia, mês e ano devem ser números válidos.")
         return False
     
@@ -135,10 +136,10 @@ def adicionar_viagem(identificador_viagem, codigo_linha, numero_serie_comboio, h
             comboio_existe = True
             break
     
-    if not linha_existe:
+    if linha_existe==False:
         print("Erro: Código da linha não existe.")
         return False
-    if not comboio_existe:
+    if comboio_existe==False:
         print("Erro: Número de série do comboio não existe.")
         return False
     
@@ -180,7 +181,7 @@ def adicionar_reserva_viagem(identificador_reserva_viagem, identificador_viagem,
             codigo_linha = viagem[1]  # Código da linha associada à viagem
             break
     
-    if not viagem_existe:
+    if viagem_existe==False:
         print("Erro: Identificador da viagem não existe.")
         return False
 
@@ -244,7 +245,7 @@ def listar_carris():
 
 def listar_linhas():
     caminho = caminho_ficheiro("linhas.txt")
-    if not os.path.exists(caminho):
+    if os.path.exists(caminho)==False:
         return []
     linhas = []
     ficheiro = open(caminho, "r")
@@ -278,7 +279,7 @@ def listar_linhas():
 
 def listar_comboios():
     caminho = caminho_ficheiro("comboios.txt")
-    if not os.path.exists(caminho):
+    if os.path.exists(caminho)==False:
         return []
     comboios = []
     ficheiro = open(caminho, "r")
@@ -290,7 +291,7 @@ def listar_comboios():
 
 def listar_viagens():
     caminho = caminho_ficheiro("viagens.txt")
-    if not os.path.exists(caminho):
+    if os.path.exists(caminho)==False:
         return []
     viagens = []
     ficheiro = open(caminho, "r")
@@ -302,7 +303,7 @@ def listar_viagens():
 
 def listar_viagens_por_linha(codigo_linha):
     caminho = caminho_ficheiro("viagens.txt")
-    if not os.path.exists(caminho):
+    if os.path.exists(caminho)==False:
         return []
     viagens = []
     ficheiro = open(caminho, "r")
@@ -316,7 +317,7 @@ def listar_viagens_por_linha(codigo_linha):
 
 def listar_paragens_por_linha(codigo_linha):
     caminho = caminho_ficheiro("paragens.txt")
-    if not os.path.exists(caminho):
+    if os.path.exists(caminho)==False:
         return []
     paragens = []
     ficheiro = open(caminho, "r")
@@ -330,7 +331,7 @@ def listar_paragens_por_linha(codigo_linha):
 
 def listar_reservas_por_viagem(identificador_viagem):
     caminho = caminho_ficheiro("reservas_viagem.txt")
-    if not os.path.exists(caminho):
+    if os.path.exists(caminho)==False:
         return []
     reservas = []
     ficheiro = open(caminho, "r")
@@ -347,7 +348,7 @@ def listar_horario_viagem(identificador_viagem):
     caminho_paragens_viagem = caminho_ficheiro("paragens_viagem.txt")
     
     # Verificar se a viagem existe
-    if not os.path.exists(caminho_viagens):
+    if os.path.exists(caminho_viagens)==False:
         print("Erro: Nenhuma viagem encontrada.")
         return False
     
@@ -364,12 +365,12 @@ def listar_horario_viagem(identificador_viagem):
             viagem_info = partes
             break
     
-    if not viagem_encontrada:
+    if viagem_encontrada==False:
         print("Erro: Identificador da viagem não existe.")
         return False
     
     # Listar paragens da viagem
-    if not os.path.exists(caminho_paragens_viagem):
+    if os.path.exists(caminho_paragens_viagem)==False:
         print("Erro: Nenhuma paragem encontrada.")
         return False
     
