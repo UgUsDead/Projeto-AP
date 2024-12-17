@@ -1,31 +1,27 @@
-import os
 import my_functions as mf
-import qrcode
-import folium
 import random
-
-
 def menu_principal():
+    
     print('''  
-╔════════════════════════════════════════════════════╗
-║     Bem-vindo ao Sistema de Gestão Ferroviária!    ║
-╠════════════════════════════════════════════════════╣
-║  1. Adicionar Estação                              ║
-║  2. Adicionar Carril                               ║
-║  3. Adicionar Linha                                ║
-║  4. Adicionar Comboio                              ║
-║  5. Adicionar Viagem                               ║
-║  6. Adicionar Paragem de Viagem                    ║
-║  7. Listar Estações                                ║
-║  8. Listar Carris                                  ║
-║  9. Listar Linhas                                  ║
-║ 10. Listar Comboios                                ║
-║ 11. Listar Viagens por Linha                       ║
-║ 12. Adicionar Reserva de Viagem                    ║
-║ 13. Listar Horário de uma Viagem e suas Paragens   ║
-║ 14. Mostrar Mapa                                   ║
-║  0. Sair                                           ║
-╚════════════════════════════════════════════════════╝
+╔═══════════════════════════════════════════════════╗
+║    Bem-vindo ao Sistema de Gestão Ferroviária!    ║
+╠═══════════════════════════════════════════════════╣
+║  1. Adicionar Estação                             ║
+║  2. Adicionar Carril                              ║
+║  3. Adicionar Linha                               ║
+║  4. Adicionar Comboio                             ║
+║  5. Adicionar Viagem                              ║
+║  6. Adicionar Paragem de Viagem                   ║
+║  7. Listar Estações                               ║
+║  8. Listar Carris                                 ║
+║  9. Listar Linhas                                 ║
+║ 10. Listar Comboios                               ║
+║ 11. Listar Viagens por Linha                      ║
+║ 12. Adicionar Reserva de Viagem                   ║
+║ 13. Listar Horário de uma Viagem e suas Paragens  ║
+║ 14. Mostrar Mapa                                  ║
+║  0. Sair                                          ║
+╚═══════════════════════════════════════════════════╝
 ''')
 
 greve=random.randint(1,10)
@@ -36,19 +32,20 @@ if greve!=10:
         opcao = input("Escolha uma opção: ").strip()
         
         match opcao:
-            case "1": #checked
+            case "1": 
                 codigo = input("Código da estação (4 letras): ").strip().upper()
                 nome = input("Nome da estação: ").strip()
                 latitude = input("Latitude: ").strip()
                 longitude = input("Longitude: ").strip()
-
+                #Inputs
+                
                 if len(codigo) != 4:
                     print("Código tem de ter 4 letras!")
                 else:
-                    if mf.estacao_existe(codigo)==True:
+                    if mf.estacao_existe(codigo)==True: #Check se codigo de estação já existe em algum ficheiro
                         print("Erro: A estação já existe!")
                     else:
-                        mf.adicionar_estacao(codigo, nome, latitude, longitude)
+                        mf.adicionar_estacao(codigo, nome, latitude, longitude) #Adiciona estação ao ficheiro
                         print("Estação adicionada com sucesso!")
             
             case "2": #checked
@@ -56,27 +53,31 @@ if greve!=10:
                 estacao_b = input("Código da estação B: ").strip().upper()
                 distancia = input("Distância (km): ").strip()
                 vel_max = input("Velocidade máxima permitida (km/h): ").strip()
+                #Inputs
                 
-                if mf.carril_existe(estacao_a, estacao_b)==False:
-                    if mf.estacao_existe(estacao_a) and mf.estacao_existe(estacao_b):
-                        mf.adicionar_carril(estacao_a, estacao_b, distancia, vel_max)
+                if mf.carril_existe(estacao_a, estacao_b)==False: #Check se carril já existe
+                    if mf.estacao_existe(estacao_a)==True and mf.estacao_existe(estacao_b)==True: #Check se ambas as estações existem
+                        mf.adicionar_carril(estacao_a, estacao_b, distancia, vel_max) #Adiciona carril ao ficheiro
                         print("Carril adicionado com sucesso!")
                     else:
                         print("Erro: Uma ou ambas as estações não existem!")
                 else:
                     print("Erro: O carril já existe!")
             
-            case "3": #
+            case "3": 
                 codigo_linha = input("Código da linha: ").strip().upper()
                 nome = input("Nome da linha: ").strip()
                 estacao_partida = input("Código da estação de partida: ").strip().upper()
                 estacao_chegada = input("Código da estação de chegada: ").strip().upper()
                 tipo_servico = input("Tipo de serviço (U, R, I, A): ").strip().upper()
-
-                if mf.adicionar_linha(codigo_linha, nome, estacao_partida, estacao_chegada, tipo_servico)==True:
-                    print("Linha adicionada com sucesso!")
+                #Inputs
+                if (tipo_servico!="U" or tipo_servico!="R" or tipo_servico!="I"or tipo_servico!="A" ):
+                    if mf.adicionar_linha(codigo_linha, nome, estacao_partida, estacao_chegada, tipo_servico)==True:  #Esta função tem as verificações "built-in". Adiciona linha ao ficheiro
+                        print("Linha adicionada com sucesso!")
+                    else:
+                        print("Falha ao adicionar linha.")
                 else:
-                    print("Falha ao adicionar linha.")
+                    print("Por favor selecione um tipo de serviço válido!")
             
             case "4":
                 numero_serie = input("Número de Série (5 dígitos): ").strip()
@@ -84,8 +85,9 @@ if greve!=10:
                 vel_max = input("Velocidade Máxima (km/h): ").strip()
                 capacidade = input("Capacidade: ").strip()
                 tipo_servico = input("Tipo de Serviço (U, R, I, A): ").strip().upper()
-
-                if mf.adicionar_comboio(numero_serie, modelo, vel_max, capacidade, tipo_servico)==True:
+                #Inputs 
+                
+                if mf.adicionar_comboio(numero_serie, modelo, vel_max, capacidade, tipo_servico)==True: #Esta função tem as verificações "built-in". Adiciona comboio ao ficheiro
                     print("Comboio adicionado com sucesso!")
                 else:
                     print("Falha ao adicionar comboio.")
@@ -94,36 +96,31 @@ if greve!=10:
                 identificador_viagem = input("Identificador da Viagem: ").strip()
                 codigo_linha = input("Código da Linha: ").strip().upper()
                 numero_serie_comboio = input("Número de Série do Comboio: ").strip()
-                # Validação da Hora de Partida
                 hora_partida = input("Hora de Partida (HH:MM): ").strip()
-                if len(hora_partida.split(":")) != 2 or hora_partida.split(":")[0].isdigit()==False or hora_partida.split(":")[1].isdigit()==False or (0 <= int(hora_partida.split(":")[0]) < 24)==False or (0 <= int(hora_partida.split(":")[1]) < 60)==False:
+                dia=input("Dia da Viagem: ").strip()
+                mes=input("Mês da Viagem: ").strip()
+                ano=input("Ano da Viagem: ").strip()
+                
+                #Inputs
+                if len(hora_partida.split(":")) != 2 or hora_partida.split(":")[0].isdigit()==False or hora_partida.split(":")[1].isdigit()==False or (0 <= int(hora_partida.split(":")[0]) < 24)==False or (0 <= int(hora_partida.split(":")[1]) < 60)==False: #Validação de hora de partida
                     print("Erro: Hora de partida inválida!")
                     continue
-                # Validação da Hora de Chegada
+               
                 hora_chegada = input("Hora de Chegada (HH:MM): ").strip()
-                if len(hora_chegada.split(":")) != 2 or hora_chegada.split(":")[0].isdigit()==False or hora_chegada.split(":")[1].isdigit()==False or (0 <= int(hora_chegada.split(":")[0]) < 24)==False or (0 <= int(hora_chegada.split(":")[1]) < 60)==False:
+                if len(hora_chegada.split(":")) != 2 or hora_chegada.split(":")[0].isdigit()==False or hora_chegada.split(":")[1].isdigit()==False or (0 <= int(hora_chegada.split(":")[0]) < 24)==False or (0 <= int(hora_chegada.split(":")[1]) < 60)==False: #Validação hora de chegada
                     print("Erro: Hora de chegada inválida!")
                     continue
                 numero_passageiros = input("Número de Passageiros: ").strip()
-                if numero_passageiros.isdigit()==False or int(numero_passageiros) < 0:
+                if numero_passageiros.isdigit()==False or int(numero_passageiros) < 0: #Verificação do nº de passageiros
                     print("Erro: Número de passageiros inválido!")
                     continue
-                # Chamada à Função de Adicionar Viagem
-                if mf.adicionar_viagem(identificador_viagem, codigo_linha, numero_serie_comboio, hora_partida, hora_chegada, "", "", "", numero_passageiros)==True:
+                
+                if mf.adicionar_viagem(identificador_viagem, codigo_linha, numero_serie_comboio, hora_partida, hora_chegada, dia, mes, ano, numero_passageiros)==True: #função tem verificações "built-in". Verifica e adiciona info ao ficheiro
                     print("Viagem adicionada com sucesso!")
                 else:
                     print("Falha ao adicionar viagem.")
             
-            case "6":
-                identificador_paragem_viagem = input("Identificador da Paragem de Viagem: ").strip()
-                identificador_paragem = input("Identificador da Paragem: ").strip()
-                identificador_viagem = input("Identificador da Viagem: ").strip()
-                hora_paragem = input("Hora da Paragem (HH:MM): ").strip()
-
-                if mf.adicionar_paragem_viagem(identificador_paragem_viagem, identificador_paragem, identificador_viagem, hora_paragem)==True:
-                    print("Paragem de viagem adicionada com sucesso!")
-                else:
-                    print("Falha ao adicionar paragem de viagem.")
+            
             
             case "7":
                 estacoes = mf.listar_estacoes()

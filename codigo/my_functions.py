@@ -110,7 +110,7 @@ def adicionar_viagem(identificador_viagem, codigo_linha, numero_serie_comboio, h
     if validar_numero(numero_passageiros)==False:
         print("Erro: Número de passageiros deve ser um número válido.")
         return False
-    if validar_numero(dia)==False or validar_numero(mes)==False or validar_numero(ano)==False:
+    if validar_data(dia,mes,ano)==True:
         print("Erro: Dia, mês e ano devem ser números válidos.")
         return False
     
@@ -160,13 +160,6 @@ def adicionar_viagem(identificador_viagem, codigo_linha, numero_serie_comboio, h
 
     return True
 
-def adicionar_paragem_viagem(identificador_paragem_viagem, identificador_paragem, identificador_viagem, hora_paragem):
-    caminho = caminho_ficheiro("paragens_viagem.txt")
-    linha = identificador_paragem_viagem + ";" + identificador_paragem + ";" + identificador_viagem + ";" + hora_paragem + "\n"
-    ficheiro = open(caminho, "a")
-    ficheiro.write(linha)
-    ficheiro.close()
-    return True
 
 def adicionar_reserva_viagem(identificador_reserva_viagem, identificador_viagem, nome_passageiro, lugar):
     # Verificar se a viagem existe
@@ -345,7 +338,7 @@ def listar_reservas_por_viagem(identificador_viagem):
 
 def listar_horario_viagem(identificador_viagem):
     caminho_viagens = caminho_ficheiro("viagens.txt")
-    caminho_paragens_viagem = caminho_ficheiro("paragens_viagem.txt")
+    caminho_paragens = caminho_ficheiro("paragens.txt")
     
     # Verificar se a viagem existe
     if os.path.exists(caminho_viagens)==False:
@@ -370,18 +363,18 @@ def listar_horario_viagem(identificador_viagem):
         return False
     
     # Listar paragens da viagem
-    if os.path.exists(caminho_paragens_viagem)==False:
+    if os.path.exists(caminho_paragens)==False:
         print("Erro: Nenhuma paragem encontrada.")
         return False
     
     paragens = []
-    ficheiro_paragens_viagem = open(caminho_paragens_viagem, "r")
-    linhas_paragens = ficheiro_paragens_viagem.readlines()
-    ficheiro_paragens_viagem.close()
+    ficheiro_paragens = open(caminho_paragens, "r")
+    linhas_paragens = ficheiro_paragens.readlines()
+    ficheiro_paragens.close()
     
     for linha in linhas_paragens:
         partes = linha.strip().split(";")
-        if partes[2] == identificador_viagem:
+        if partes[1] == identificador_viagem:
             paragens.append(partes)
     
     # Exibir informações da viagem e suas paragens
@@ -527,3 +520,21 @@ def validar_numero(valor):
         return True
     except ValueError:
         return False
+
+def validar_data(dia, mes, ano):
+    # Verificar se o mês é válido
+    if mes < 1 or mes > 12:
+        return False
+    
+    # Definir o número de dias por mês para anos não bissextos
+    dias_por_mes = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
+    
+    # Verificar se o ano é bissexto
+    if (ano % 4 == 0 and ano % 100 != 0) or (ano % 400 == 0):
+        dias_por_mes[1] = 29  # Fevereiro tem 29 dias em anos bissextos
+    
+    # Verificar se o dia é válido para o mês e ano
+    if dia < 1 or dia > dias_por_mes[mes - 1]:
+        return False
+    
+    return True
