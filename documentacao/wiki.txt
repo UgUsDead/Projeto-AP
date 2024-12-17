@@ -1,11 +1,26 @@
+#-------------------------------------------------------------------------------------------------------------------------------------------------------------#
+                                                                                  AVISOS  !!!
+
+Antes de começar a usar o código, é aconselhado que o utilizador abra a sua cmd (command prompt / linha de comandos) e use os seguintes comandos:
+
+-pip install folium
+-pip install qrcode
+-pip install pillow
+
+O código é constituído por uma probabilidade de 1 em 10 em que seja possível haver "greve", caso aconteça e queira usar o código, o utilizador deve reiniciar o programa e tentar denovo.
+
+#-------------------------------------------------------------------------------------------------------------------------------------------------------------#
+                                                                               FUNCIONALIDADES
+
+
 1-Adicionar Estação
-Permite adicionar uma nova estação ao sistema. O utilizador deve fornecer os dados pedidos como : nome, latitude e longitude. O código da estação deve ser único.
+Adiciona uma nova estação ao sistema. O utilizador deve fornecer os dados pedidos como : nome, latitude e longitude. O código da estação deve ser único.
 
 2-Adicionar Carril
-Conecta duas estações com um carril (linha férrea), especificando a distância e a velocidade máxima. O utilizador deve fornecer os códigos das duas estações e as respectivas distâncias e velocidades.
+Conecta duas estações com um carril, especificando a distância e a velocidade máxima. O utilizador deve fornecer os códigos das duas estações e as respectivas distâncias e velocidades.
 
 3-Adicionar Linha
-Cria uma nova linha de comboio, ligando duas estações (partida e chegada). O utilizador pode também adicionar estações intermediárias, caso haja mais de uma paragem entre estas duas estações.
+Cria uma nova linha de comboio que liga duas estações (partida e chegada). O utilizador pode também adicionar estações intermediárias, caso haja mais de uma paragem entre estas duas estações.
 
 4-Adicionar Comboio
 Regista um comboio no sistema, fornecendo informações como número de série, modelo, velocidade máxima e capacidade. O número de série deve ser único.
@@ -39,8 +54,6 @@ Esta funcionalidade permite visualizar o horário de uma viagem específica, inc
 
 14-Mostrar Mapa
 Abre um separador no google com um mapa centralizado em Portugal com as estações do programa.
-
-
 
 0-Sair
 Guess what it does :3 (sai do programa :3)
