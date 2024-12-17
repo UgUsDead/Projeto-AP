@@ -19,6 +19,7 @@ def menu_principal():
 ║ 11. Adicionar Reserva de Viagem                   ║
 ║ 12. Listar Horário de uma Viagem e suas Paragens  ║
 ║ 13. Mostrar Mapa                                  ║
+║ 14. Procurar por comboio                          ║
 ║  0. Sair                                          ║
 ╚═══════════════════════════════════════════════════╝
 ''')

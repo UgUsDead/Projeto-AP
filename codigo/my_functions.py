@@ -62,20 +62,36 @@ def adicionar_linha(codigo_linha, nome, estacao_partida, estacao_chegada, tipo_s
     else:
         paradas = []
 
+    # Adicionar a linha no ficheiro linhas.txt
     caminho = caminho_ficheiro("linhas.txt")
-    linha = codigo_linha + ";" + nome + ";" + estacao_partida + ";" + estacao_chegada + ";" + tipo_servico + "\n"
     ficheiro = open(caminho, "a")
+    linha = codigo_linha + ";" + nome + ";" + estacao_partida + ";" + estacao_chegada + ";" + tipo_servico + "\n"
     ficheiro.write(linha)
     ficheiro.close()
 
-    # Save paragens to paragens.txt
+    # Gerar o ID Paragem incrementando o último existente
     caminho_paragens = caminho_ficheiro("paragens.txt")
+    ultimo_id = 0
+
+    # Ler o último ID existente em paragens.txt
+    if os.path.exists(caminho_paragens):
+        ficheiro_paragens = open(caminho_paragens, "r")
+        for linha in ficheiro_paragens:
+            partes = linha.strip().split(";")
+            if len(partes) >= 1 and partes[0].isdigit():
+                ultimo_id = max(ultimo_id, int(partes[0]))  # Atualiza o último ID
+        ficheiro_paragens.close()
+
+    # Adicionar as paragens ao ficheiro paragens.txt
     ficheiro_paragens = open(caminho_paragens, "a")
     for parada in paradas:
-        ficheiro_paragens.write(codigo_linha + ";" + parada + "\n")
+        ultimo_id += 1  # Incrementa o ID
+        linha_paragem = str(ultimo_id) + ";" + codigo_linha + ";" + parada + "\n"
+        ficheiro_paragens.write(linha_paragem)
     ficheiro_paragens.close()
 
     return True
+
 
 # Comboios
 def adicionar_comboio(numero_serie, modelo, vel_max, capacidade, tipo_servico):
@@ -104,61 +120,72 @@ def adicionar_comboio(numero_serie, modelo, vel_max, capacidade, tipo_servico):
 
 # Viagens
 def adicionar_viagem(identificador_viagem, codigo_linha, numero_serie_comboio, hora_partida, hora_chegada, dia, mes, ano, numero_passageiros):
-    if validar_numero(identificador_viagem)==False:
+    if not validar_numero(identificador_viagem):
         print("Erro: Identificador da viagem deve ser um número válido.")
         return False
-    if validar_numero(numero_passageiros)==False:
+    if not validar_numero(numero_passageiros):
         print("Erro: Número de passageiros deve ser um número válido.")
         return False
-    if validar_data(dia,mes,ano)==False:
-        print("Erro: Dia, mês e ano devem ser números válidos.")
+    if not validar_data(dia, mes, ano):
+        print("Erro: Data inválida.")
         return False
-    
+
+    # Check if viagem ID already exists
     viagens = listar_viagens()
     for viagem in viagens:
         if viagem[0] == identificador_viagem:
             print("Erro: Identificador da viagem já existe.")
             return False
-    
+
+    # Check if line and train exist
     linhas = listar_linhas()
     comboios = listar_comboios()
-    
-    linha_existe = False
-    comboio_existe = False
-    
-    for linha in linhas:
-        if linha[0] == codigo_linha:
-            linha_existe = True
-            break
-    
-    for comboio in comboios:
-        if comboio[0] == numero_serie_comboio:
-            comboio_existe = True
-            break
-    
-    if linha_existe==False:
+
+    linha_existe = any(linha[0] == codigo_linha for linha in linhas)
+    comboio_existe = any(comboio[0] == numero_serie_comboio for comboio in comboios)
+
+    if not linha_existe:
         print("Erro: Código da linha não existe.")
         return False
-    if comboio_existe==False:
+    if not comboio_existe:
         print("Erro: Número de série do comboio não existe.")
         return False
-    
-    caminho = caminho_ficheiro("viagens.txt")
-    linha = identificador_viagem + ";" + codigo_linha + ";" + numero_serie_comboio + ";" + hora_partida + ";" + hora_chegada + ";" + dia + ";" + mes + ";" + ano + ";" + numero_passageiros + "\n"
-    ficheiro = open(caminho, "a")
-    ficheiro.write(linha)
-    ficheiro.close()
 
-    # Adicionar paragens associadas à linha
-    paragens = listar_paragens_por_linha(codigo_linha)
+    # Save viagem to viagens.txt
+    caminho_viagens = caminho_ficheiro("viagens.txt")
+    ficheiro_viagens = open(caminho_viagens, "a")
+    ficheiro_viagens.write(
+        identificador_viagem + ";" + codigo_linha + ";" + numero_serie_comboio + ";" +
+        hora_partida + ";" + hora_chegada + ";" + dia + ";" + mes + ";" + ano + ";" + numero_passageiros + "\n"
+    )
+    ficheiro_viagens.close()
+
+    # Find stops (paragens) associated with the line and add to paragens_viagem.txt
+    paragens = []
+    caminho_paragens = caminho_ficheiro("paragens.txt")
+    ficheiro_paragens = open(caminho_paragens, "r")
+    linhas_paragens = ficheiro_paragens.readlines()
+    ficheiro_paragens.close()
+
+    for linha in linhas_paragens:
+        partes = linha.strip().split(";")
+        if len(partes) == 3 and partes[1] == codigo_linha:  # Match Line ID
+            paragens.append(partes[2])  # Append Station ID only (3rd value)
+
+    # Save stops to paragens_viagem.txt
     caminho_paragens_viagem = caminho_ficheiro("paragens_viagem.txt")
     ficheiro_paragens_viagem = open(caminho_paragens_viagem, "a")
-    for paragem in paragens:
-        identificador_paragem_viagem = "PV" + str(identificador_viagem) + "_" + str(paragens.index(paragem) + 1)
-        ficheiro_paragens_viagem.write(identificador_paragem_viagem + ";" + paragem[0] + ";" + identificador_viagem + ";" + hora_partida + "\n")
+    index = 1
+    for station_id in paragens:
+        ficheiro_paragens_viagem.write(
+            "PV" + identificador_viagem + "_" + str(index) + ";" + station_id + ";" + identificador_viagem + "\n"
+        )
+        index += 1
     ficheiro_paragens_viagem.close()
 
     return True
+
+
 
 
 def adicionar_reserva_viagem(identificador_reserva_viagem, identificador_viagem, nome_passageiro, lugar):
@@ -338,62 +365,58 @@ def listar_reservas_por_viagem(identificador_viagem):
 
 def listar_horario_viagem(identificador_viagem):
     caminho_viagens = caminho_ficheiro("viagens.txt")
-    caminho_paragens = caminho_ficheiro("paragens.txt")
+    caminho_paragens_viagem = caminho_ficheiro("paragens_viagem.txt")
     
     # Verificar se a viagem existe
-    if os.path.exists(caminho_viagens)==False:
+    if not os.path.exists(caminho_viagens):
         print("Erro: Nenhuma viagem encontrada.")
         return False
-    
-    viagem_encontrada = False
-    viagem_info = None
-    ficheiro_viagens = open(caminho_viagens, "r")
+
+    viagem_encontrada = None
+    ficheiro_viagens = os.fdopen(os.open(caminho_viagens, os.O_RDONLY))
     linhas_viagens = ficheiro_viagens.readlines()
     ficheiro_viagens.close()
-    
+
     for linha in linhas_viagens:
         partes = linha.strip().split(";")
         if partes[0] == identificador_viagem:
-            viagem_encontrada = True
-            viagem_info = partes
+            viagem_encontrada = partes
             break
-    
-    if viagem_encontrada==False:
+
+    if not viagem_encontrada:
         print("Erro: Identificador da viagem não existe.")
         return False
-    
-    # Listar paragens da viagem
-    if os.path.exists(caminho_paragens)==False:
-        print("Erro: Nenhuma paragem encontrada.")
-        return False
-    
-    paragens = []
-    ficheiro_paragens = open(caminho_paragens, "r")
-    linhas_paragens = ficheiro_paragens.readlines()
-    ficheiro_paragens.close()
-    
-    for linha in linhas_paragens:
-        partes = linha.strip().split(";")
-        if partes[1] == identificador_viagem:
-            paragens.append(partes)
-    
-    # Exibir informações da viagem e suas paragens
+
+    # Listar paragens associadas à viagem
+    paragens_viagem = []
+    if os.path.exists(caminho_paragens_viagem):
+        ficheiro_paragens_viagem = os.fdopen(os.open(caminho_paragens_viagem, os.O_RDONLY))
+        linhas_paragens_viagem = ficheiro_paragens_viagem.readlines()
+        ficheiro_paragens_viagem.close()
+
+        for linha in linhas_paragens_viagem:
+            partes = linha.strip().split(";")
+            if partes[2] == identificador_viagem:  # Match the trip ID
+                paragens_viagem.append(partes[1])  # Store stop names
+
+    # Exibir informações da viagem
     print("Horário da Viagem:")
-    print("Identificador: " + viagem_info[0])
-    print("Código da Linha: " + viagem_info[1])
-    print("Número de Série do Comboio: " + viagem_info[2])
-    print("Hora de Partida: " + viagem_info[3])
-    print("Hora de Chegada: " + viagem_info[4])
-    print("Data: " + viagem_info[5] + "/" + viagem_info[6] + "/" + viagem_info[7])
-    print("Número de Passageiros: " + viagem_info[8])
-    
-    if paragens:
-        print("Paragens:")
-        for paragem in paragens:
-            print("Identificador da Paragem: " + paragem[1] + " | Hora da Paragem: " + paragem[3])
+    print("Identificador: {}".format(viagem_encontrada[0]))
+    print("Código da Linha: {}".format(viagem_encontrada[1]))
+    print("Número de Série do Comboio: {}".format(viagem_encontrada[2]))
+    print("Hora de Partida: {}".format(viagem_encontrada[3]))
+    print("Hora de Chegada: {}".format(viagem_encontrada[4]))
+    print("Data: {}/{}/{}".format(viagem_encontrada[5], viagem_encontrada[6], viagem_encontrada[7]))
+    print("Número de Passageiros: {}".format(viagem_encontrada[8]))
+
+    # Exibir paragens da viagem
+    if paragens_viagem:
+        print("Paragens da Viagem:")
+        for idx, paragem in enumerate(paragens_viagem, start=1):
+            print("{}. {}".format(idx, paragem))
     else:
-        print("Nenhuma paragem encontrada para esta viagem.")
-    
+        print("Nenhuma paragem associada a esta viagem.")
+
     return True
 
 def estacao_existe(codigo):
