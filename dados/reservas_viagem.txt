@@ -1,0 +1,6 @@
+R001;V001;João Silva;1A
+R002;V001;Maria Costa;1B
+R003;V002;Carlos Pereira;2A
+R004;V003;Ana Ramos;3C
+R005;V004;Luís Gomes;4D
+R006;V005;Sofia Mendes;2B

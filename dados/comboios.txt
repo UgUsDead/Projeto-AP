@@ -1,2 +1,5 @@
-12345;Ford Fiesta;250;1000000;Urbano
-69420;SexMobile;420;8;Urbano
+10001;Alfa Pendular;220;300;I
+10002;Intercidades;180;400;R
+20001;Urbano Norte;100;200;U
+20002;Urbano Sul;100;150;U
+30001;Regional Centro;140;250;R

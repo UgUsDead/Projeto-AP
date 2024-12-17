@@ -16,6 +16,7 @@ def menu_principal():
     print("11. Listar Viagens por Linha")
     print("12. Adicionar Reserva de Viagem")
     print("13. Listar Horário de uma Viagem e suas Paragens")
+    print("14. Mostrar Mapa")
     print("0. Sair")
 
 while True:
@@ -81,14 +82,22 @@ while True:
             identificador_viagem = input("Identificador da Viagem: ").strip()
             codigo_linha = input("Código da Linha: ").strip().upper()
             numero_serie_comboio = input("Número de Série do Comboio: ").strip()
+            # Validação da Hora de Partida
             hora_partida = input("Hora de Partida (HH:MM): ").strip()
+            if len(hora_partida.split(":")) != 2 or not hora_partida.split(":")[0].isdigit() or not hora_partida.split(":")[1].isdigit() or not (0 <= int(hora_partida.split(":")[0]) < 24) or not (0 <= int(hora_partida.split(":")[1]) < 60):
+                print("Erro: Hora de partida inválida!")
+                continue
+            # Validação da Hora de Chegada
             hora_chegada = input("Hora de Chegada (HH:MM): ").strip()
-            dia = input("Dia: ").strip()
-            mes = input("Mês: ").strip()
-            ano = input("Ano: ").strip()
+            if len(hora_chegada.split(":")) != 2 or not hora_chegada.split(":")[0].isdigit() or not hora_chegada.split(":")[1].isdigit() or not (0 <= int(hora_chegada.split(":")[0]) < 24) or not (0 <= int(hora_chegada.split(":")[1]) < 60):
+                print("Erro: Hora de chegada inválida!")
+                continue
             numero_passageiros = input("Número de Passageiros: ").strip()
-
-            if mf.adicionar_viagem(identificador_viagem, codigo_linha, numero_serie_comboio, hora_partida, hora_chegada, dia, mes, ano, numero_passageiros):
+            if not numero_passageiros.isdigit() or int(numero_passageiros) < 0:
+                print("Erro: Número de passageiros inválido!")
+                continue
+            # Chamada à Função de Adicionar Viagem
+            if mf.adicionar_viagem(identificador_viagem, codigo_linha, numero_serie_comboio, hora_partida, hora_chegada, "", "", "", numero_passageiros):
                 print("Viagem adicionada com sucesso!")
             else:
                 print("Falha ao adicionar viagem.")
@@ -160,7 +169,9 @@ while True:
             lugar = input("Lugar: ").strip()
 
             if mf.adicionar_reserva_viagem(identificador_reserva_viagem, identificador_viagem, nome_passageiro, lugar):
+                mf.codigo_qr(identificador_viagem)
                 print("Reserva de viagem adicionada com sucesso!")
+
             else:
                 print("Falha ao adicionar reserva de viagem.")
         
@@ -168,6 +179,9 @@ while True:
             identificador_viagem = input("Identificador da Viagem: ").strip()
             if not mf.listar_horario_viagem(identificador_viagem):
                 print("Erro ao listar o horário da viagem.")
+
+        case "14":
+            mf.mostrar_mapa()
         
         case "0":
             print("A encerrar o sistema. Até logo!")
@@ -175,3 +189,6 @@ while True:
         
         case _:
             print("Opção inválida! Tente novamente.")
+
+    if opcao not in [str(i) for i in range(15)]:
+        print("Opção inválida! Tente novamente.")

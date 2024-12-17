@@ -1,2 +1,5 @@
-1;Roxa;PRT;COI;A
-2;Preta;VLCD;COI;A
+L01;Linha Norte;VLCD;BRGA;U
+L02;Linha Central;PRT;COIM;R
+L03;Linha Sul;LISB;FARO;I
+L04;Linha Urbana;PRT;GDMR;U
+L05;Linha Intermunicipal;LISB;EVOR;I
