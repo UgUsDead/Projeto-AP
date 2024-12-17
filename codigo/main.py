@@ -20,7 +20,7 @@ def menu_principal():
 ║ 12. Listar Horário de uma Viagem e suas Paragens  ║
 ║ 13. Mostrar Mapa                                  ║
 ║ 14. Procurar por comboio                          ║
-║  15. Procurar linhas a partir de estação          ║             
+║ 15. Procurar linhas a partir de estação           ║             
 ║  0. Sair                                          ║
 ╚═══════════════════════════════════════════════════╝
 ''')
