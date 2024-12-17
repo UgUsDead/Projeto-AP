@@ -40,7 +40,7 @@ if greve!=10:
                 if len(codigo) != 4:
                     print("Código tem de ter 4 letras!")
                 else:
-                    if mf.estacao_existe(codigo)==True:
+                    if mf.estacao_existe(codigo):
                         print("Erro: A estação já existe!")
                     else:
                         mf.adicionar_estacao(codigo, nome, latitude, longitude)
@@ -52,7 +52,7 @@ if greve!=10:
                 distancia = input("Distância (km): ").strip()
                 vel_max = input("Velocidade máxima permitida (km/h): ").strip()
                 
-                if mf.carril_existe(estacao_a, estacao_b)==False:
+                if not mf.carril_existe(estacao_a, estacao_b):
                     if mf.estacao_existe(estacao_a) and mf.estacao_existe(estacao_b):
                         mf.adicionar_carril(estacao_a, estacao_b, distancia, vel_max)
                         print("Carril adicionado com sucesso!")
@@ -68,7 +68,7 @@ if greve!=10:
                 estacao_chegada = input("Código da estação de chegada: ").strip().upper()
                 tipo_servico = input("Tipo de serviço (U, R, I, A): ").strip().upper()
 
-                if mf.adicionar_linha(codigo_linha, nome, estacao_partida, estacao_chegada, tipo_servico)==True:
+                if mf.adicionar_linha(codigo_linha, nome, estacao_partida, estacao_chegada, tipo_servico):
                     print("Linha adicionada com sucesso!")
                 else:
                     print("Falha ao adicionar linha.")
@@ -80,7 +80,7 @@ if greve!=10:
                 capacidade = input("Capacidade: ").strip()
                 tipo_servico = input("Tipo de Serviço (U, R, I, A): ").strip().upper()
 
-                if mf.adicionar_comboio(numero_serie, modelo, vel_max, capacidade, tipo_servico)==True:
+                if mf.adicionar_comboio(numero_serie, modelo, vel_max, capacidade, tipo_servico):
                     print("Comboio adicionado com sucesso!")
                 else:
                     print("Falha ao adicionar comboio.")
@@ -91,20 +91,20 @@ if greve!=10:
                 numero_serie_comboio = input("Número de Série do Comboio: ").strip()
                 # Validação da Hora de Partida
                 hora_partida = input("Hora de Partida (HH:MM): ").strip()
-                if len(hora_partida.split(":")) != 2 or hora_partida.split(":")[0].isdigit()==False or hora_partida.split(":")[1].isdigit()==False or (0 <= int(hora_partida.split(":")[0]) < 24)==False or (0 <= int(hora_partida.split(":")[1]) < 60)==False:
+                if len(hora_partida.split(":")) != 2 or not hora_partida.split(":")[0].isdigit() or not hora_partida.split(":")[1].isdigit() or not (0 <= int(hora_partida.split(":")[0]) < 24) or not (0 <= int(hora_partida.split(":")[1]) < 60):
                     print("Erro: Hora de partida inválida!")
                     continue
                 # Validação da Hora de Chegada
                 hora_chegada = input("Hora de Chegada (HH:MM): ").strip()
-                if len(hora_chegada.split(":")) != 2 or hora_chegada.split(":")[0].isdigit()==False or hora_chegada.split(":")[1].isdigit()==False or (0 <= int(hora_chegada.split(":")[0]) < 24)==False or (0 <= int(hora_chegada.split(":")[1]) < 60)==False:
+                if len(hora_chegada.split(":")) != 2 or not hora_chegada.split(":")[0].isdigit() or not hora_chegada.split(":")[1].isdigit() or not (0 <= int(hora_chegada.split(":")[0]) < 24) or not (0 <= int(hora_chegada.split(":")[1]) < 60):
                     print("Erro: Hora de chegada inválida!")
                     continue
                 numero_passageiros = input("Número de Passageiros: ").strip()
-                if numero_passageiros.isdigit()==False or int(numero_passageiros) < 0:
+                if not numero_passageiros.isdigit() or int(numero_passageiros) < 0:
                     print("Erro: Número de passageiros inválido!")
                     continue
                 # Chamada à Função de Adicionar Viagem
-                if mf.adicionar_viagem(identificador_viagem, codigo_linha, numero_serie_comboio, hora_partida, hora_chegada, "", "", "", numero_passageiros)==True:
+                if mf.adicionar_viagem(identificador_viagem, codigo_linha, numero_serie_comboio, hora_partida, hora_chegada, "", "", "", numero_passageiros):
                     print("Viagem adicionada com sucesso!")
                 else:
                     print("Falha ao adicionar viagem.")
@@ -115,7 +115,7 @@ if greve!=10:
                 identificador_viagem = input("Identificador da Viagem: ").strip()
                 hora_paragem = input("Hora da Paragem (HH:MM): ").strip()
 
-                if mf.adicionar_paragem_viagem(identificador_paragem_viagem, identificador_paragem, identificador_viagem, hora_paragem)==True:
+                if mf.adicionar_paragem_viagem(identificador_paragem_viagem, identificador_paragem, identificador_viagem, hora_paragem):
                     print("Paragem de viagem adicionada com sucesso!")
                 else:
                     print("Falha ao adicionar paragem de viagem.")
@@ -175,7 +175,7 @@ if greve!=10:
                 nome_passageiro = input("Nome do Passageiro: ").strip()
                 lugar = input("Lugar: ").strip()
 
-                if mf.adicionar_reserva_viagem(identificador_reserva_viagem, identificador_viagem, nome_passageiro, lugar)==True:
+                if mf.adicionar_reserva_viagem(identificador_reserva_viagem, identificador_viagem, nome_passageiro, lugar):
                     mf.codigo_qr(identificador_viagem,nome_passageiro,lugar)
                     print("Reserva de viagem adicionada com sucesso!")
 
@@ -184,7 +184,7 @@ if greve!=10:
             
             case "13":
                 identificador_viagem = input("Identificador da Viagem: ").strip()
-                if mf.listar_horario_viagem(identificador_viagem)==False:
+                if not mf.listar_horario_viagem(identificador_viagem):
                     print("Erro ao listar o horário da viagem.")
 
             case "14":

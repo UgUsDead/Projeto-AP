@@ -7,6 +7,8 @@ Antes de começar a usar o código, é aconselhado que o utilizador abra a sua c
 -pip install qrcode
 -pip install pillow
 
+Para correr o código, deve estar apenas na main.py e correr o código através do mesmo.
+
 O código é constituído por uma probabilidade de 1 em 10 em que seja possível haver "greve", caso aconteça e queira usar o código, o utilizador deve reiniciar o programa e tentar denovo.
 
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------#
