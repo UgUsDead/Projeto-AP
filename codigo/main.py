@@ -242,7 +242,7 @@ if greve!=10:
             
             
 
-        if opcao not in [str(i) for i in range(15)]: 
+        if opcao not in [str(i) for i in range(16)]: 
             print("Opção inválida! Tente novamente.")
 else:
     print("A CP hoje está de greve. Pedimos desculpa por qualquer incomodo que esta situação possa ter causado :c")
