@@ -3,7 +3,9 @@ import qrcode
 import folium 
 
 def caminho_ficheiro(nome_ficheiro):
+    #Vau 
     path = os.path.realpath(__file__)
+    print(path)
     dir = os.path.dirname(path).replace("codigo", "dados")
     if not os.path.exists(dir):
         os.makedirs(dir)  # Certifique-se de que o diretório "dados" exista
@@ -446,6 +448,7 @@ def obter_conexoes():
 def existe_caminho(estacao_a, estacao_b):  #https://www.youtube.com/watch?v=HZ5YTanv5QE (Explicação do nosso algoritmo de procura (não é dijkstras é BFS))
     #Algoritmo de procura de caminho mais curto
     conexoes = obter_conexoes()
+    #Caso estaçao a ou estacao B nao tenham caminho uma para a outra, retorna falso. 
     if estacao_a not in conexoes or estacao_b not in conexoes:
         return False
     
