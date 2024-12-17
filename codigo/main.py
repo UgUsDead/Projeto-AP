@@ -8,23 +8,23 @@ import random
 def menu_principal():
     print('''  
 ╔════════════════════════════════════════════════════╗
-║        Bem-vindo ao Sistema de Gestão Ferroviária!  ║
+║     Bem-vindo ao Sistema de Gestão Ferroviária!    ║
 ╠════════════════════════════════════════════════════╣
-║  1. Adicionar Estação                             ║
-║  2. Adicionar Carril                              ║
-║  3. Adicionar Linha                               ║
-║  4. Adicionar Comboio                             ║
-║  5. Adicionar Viagem                              ║
-║  6. Adicionar Paragem de Viagem                   ║
-║  7. Listar Estações                               ║
-║  8. Listar Carris                                 ║
-║  9. Listar Linhas                                 ║
-║ 10. Listar Comboios                               ║
-║ 11. Listar Viagens por Linha                      ║
-║ 12. Adicionar Reserva de Viagem                   ║
-║ 13. Listar Horário de uma Viagem e suas Paragens  ║
-║ 14. Mostrar Mapa                                  ║
-║  0. Sair                                          ║
+║  1. Adicionar Estação                              ║
+║  2. Adicionar Carril                               ║
+║  3. Adicionar Linha                                ║
+║  4. Adicionar Comboio                              ║
+║  5. Adicionar Viagem                               ║
+║  6. Adicionar Paragem de Viagem                    ║
+║  7. Listar Estações                                ║
+║  8. Listar Carris                                  ║
+║  9. Listar Linhas                                  ║
+║ 10. Listar Comboios                                ║
+║ 11. Listar Viagens por Linha                       ║
+║ 12. Adicionar Reserva de Viagem                    ║
+║ 13. Listar Horário de uma Viagem e suas Paragens   ║
+║ 14. Mostrar Mapa                                   ║
+║  0. Sair                                           ║
 ╚════════════════════════════════════════════════════╝
 ''')
 
