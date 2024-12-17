@@ -20,6 +20,7 @@ def menu_principal():
 ║ 12. Listar Horário de uma Viagem e suas Paragens  ║
 ║ 13. Mostrar Mapa                                  ║
 ║ 14. Procurar por comboio                          ║
+║  15. Procurar linhas a partir de estação          ║             
 ║  0. Sair                                          ║
 ╚═══════════════════════════════════════════════════╝
 ''')
@@ -223,6 +224,17 @@ if greve!=10:
                 else:
                     print("Nenhum comboio encontrado.")
 
+            case "15":  # Procurar linhas que passam por uma estação
+                estacao_id = input("Introduza o ID da Estação (ex: LISB): ").strip().upper()
+                resultado = mf.procurar_linhas_por_estacao(estacao_id)
+
+                if resultado:
+                    print("Linhas que passam pela estação {}:".format(estacao_id))
+                    for linha in resultado:
+                        print("Linha ID: " + linha[0] + " | Nome: " + linha[1] +
+                              " | Tipo de Serviço: " + linha[4])
+                else:
+                    print("Nenhuma linha encontrada para a estação {}".format(estacao_id))
             
             case "0":
                 print("A encerrar o sistema. Até logo!")

@@ -588,3 +588,45 @@ def procurar_comboio(tipo, valor):
         print("Erro: Tipo inválido. Use 'SN' para número de série ou 'CAP' para capacidade.")
 
     return resultado
+
+
+def procurar_linhas_por_estacao(estacao_id):
+    """
+    Procura todas as linhas que passam por uma estação específica.
+    - estacao_id: O ID da estação (por exemplo, 'LISB').
+    """
+    linhas = listar_linhas()  # Lista todas as linhas em linhas.txt
+    paragens = listar_paragens()  # Lista todas as paragens em paragens.txt
+    resultado = []
+
+    # Verificar se a estação aparece como estação inicial, final ou paragem
+    for linha in linhas:
+        linha_id = linha[0]
+        estacao_partida = linha[2]
+        estacao_chegada = linha[3]
+
+        # Verificar se a estação é partida ou chegada
+        if estacao_id == estacao_partida or estacao_id == estacao_chegada:
+            resultado.append(linha)
+            continue
+
+        # Verificar se a estação aparece como paragem
+        for paragem in paragens:
+            if paragem[1] == linha_id and paragem[2] == estacao_id:  # Line ID and Station ID match
+                resultado.append(linha)
+                break
+
+    return resultado
+
+def listar_paragens():
+    caminho = caminho_ficheiro("paragens.txt")
+    paragens = []
+
+    if os.path.exists(caminho):
+        with open(caminho, "r") as ficheiro:
+            for linha in ficheiro:
+                partes = linha.strip().split(";")
+                if len(partes) == 3:  # Ensure valid stop format
+                    paragens.append(partes)
+
+    return paragens
