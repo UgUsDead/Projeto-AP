@@ -630,3 +630,27 @@ def listar_paragens():
                     paragens.append(partes)
 
     return paragens
+
+def procurar_viagens_por_estacao(estacao_id):
+    """
+    Procura viagens que começam ou terminam numa estação específica.
+    - estacao_id: O ID da estação (ex: 'LISB').
+    """
+    viagens = listar_viagens()  # Lista todas as viagens em viagens.txt
+    linhas = listar_linhas()    # Lista todas as linhas em linhas.txt
+    resultado = []
+
+    # Encontrar as linhas que têm a estação como partida ou chegada
+    linhas_relevantes = []
+    for linha in linhas:
+        estacao_partida = linha[2]
+        estacao_chegada = linha[3]
+        if estacao_id == estacao_partida or estacao_id == estacao_chegada:
+            linhas_relevantes.append(linha[0])  # Adiciona o Line ID
+
+    # Comparar viagens que usam as linhas encontradas
+    for viagem in viagens:
+        if viagem[1] in linhas_relevantes:  # Verifica se a viagem pertence à linha relevante
+            resultado.append(viagem)
+
+    return resultado

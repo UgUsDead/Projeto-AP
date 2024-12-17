@@ -235,6 +235,18 @@ if greve!=10:
                               " | Tipo de Serviço: " + linha[4])
                 else:
                     print("Nenhuma linha encontrada para a estação {}".format(estacao_id))
+
+            case "16":  # Procurar viagens por estação
+                estacao_id = input("Introduza o ID da Estação (ex: LISB): ").strip().upper()
+                resultado = mf.procurar_viagens_por_estacao(estacao_id)
+
+                if resultado:
+                    print("Viagens que começam ou terminam na estação {}:".format(estacao_id))
+                    for viagem in resultado:
+                        print("ID Viagem: " + viagem[0] + " | Linha ID: " + viagem[1] +" | Comboio: " + viagem[2] + " | Hora de Partida: " + viagem[3] +" | Hora de Chegada: " + viagem[4] + " | Data: "+viagem[5]+"/"+viagem[6]+"/"+ viagem[7] + " | Passageiros: " + viagem[8])
+                else:
+                    print("Nenhuma viagem encontrada para a estação {}".format(estacao_id))
+
             
             case "0":
                 print("A encerrar o sistema. Até logo!")
@@ -242,7 +254,7 @@ if greve!=10:
             
             
 
-        if opcao not in [str(i) for i in range(16)]: 
+        if opcao not in [str(i) for i in range(17)]: 
             print("Opção inválida! Tente novamente.")
 else:
     print("A CP hoje está de greve. Pedimos desculpa por qualquer incomodo que esta situação possa ter causado :c")
