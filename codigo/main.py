@@ -202,3 +202,4 @@ if greve!=10:
             print("Opção inválida! Tente novamente.")
 else:
     print("A CP hoje está de greve. Pedimos desculpa por qualquer incomodo que esta situação possa ter causado :c")
+    print("Thats its folks")
