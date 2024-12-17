@@ -1,4 +1,0 @@
-10001;Alfa-Pend;200;300;A
-20001;Intercity;160;250;I
-30001;Regional;120;200;R
-10002;gjksdfg;150;250;I

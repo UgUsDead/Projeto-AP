@@ -1,4 +1,0 @@
-L001;Linha Norte;VLCD;BRGA;R
-L002;Linha Centro;PRT;CBR;I
-L003;Linha Sul;LSB;FAR;A
-L004;Linha Burra;FAR;CBR;U

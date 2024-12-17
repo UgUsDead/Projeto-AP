@@ -1,3 +1,0 @@
-R005;V002;Swagger360;13
-R005;V001;Swagger360;12
-R005;V002;Raul Pereira;17
