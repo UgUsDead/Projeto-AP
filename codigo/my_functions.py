@@ -564,3 +564,28 @@ def validar_data(dia, mes, ano):
         return False
     
     return True
+
+
+def procurar_comboio(tipo, valor):
+   
+    comboios = listar_comboios()
+    resultado = []
+
+    if tipo == "SN":  # Search by Serial Number
+        for comboio in comboios:
+            if comboio[0] == valor:  # Exact match with serial number
+                resultado.append(comboio)
+
+    elif tipo == "CAP":  # Search by Capacity
+        try:
+            max_passageiros = int(valor)  # Convert to integer
+            for comboio in comboios:
+                capacidade = int(comboio[3])  # Passenger capacity
+                if capacidade <= max_passageiros:
+                    resultado.append(comboio)
+        except ValueError:
+            print("Erro: A capacidade máxima deve ser um número válido.")
+    else:
+        print("Erro: Tipo inválido. Use 'SN' para número de série ou 'CAP' para capacidade.")
+
+    return resultado

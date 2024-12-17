@@ -190,6 +190,39 @@ if greve!=10:
             case "13":
                 mf.mapa()
                 print("Mapa impresso com sucesso!")
+
+            case "14":  # Procurar comboio
+                print("Procurar Comboio:")
+                print("1. Procurar por Número de Série")
+                print("2. Procurar por Quantidade Máxima de Passageiros")
+                escolha = input("Escolha uma opção (1 ou 2): ").strip()
+
+                if escolha == "1":  # Search by Serial Number
+                    tipo = "SN"
+                    valor = input("Introduza o Número de Série do Comboio: ").strip()
+                elif escolha == "2":  # Search by Passenger Capacity
+                    tipo = "CAP"
+                    valor = input("Introduza a Capacidade Máxima (número): ").strip()
+                    if not valor.isdigit():
+                        print("Erro: Capacidade deve ser um número válido.")
+                        continue
+                else:
+                    print("Opção inválida.")
+                    continue
+
+                # Call the search function
+                resultado = mf.procurar_comboio(tipo, valor)
+
+                # Display results
+                if resultado:
+                    print("Comboios encontrados:")
+                    for comboio in resultado:
+                        print("Número de Série: " + comboio[0] + " | Nome: " + comboio[1] +
+                              " | Velocidade Máxima: " + comboio[2] + " | Capacidade: " +
+                              comboio[3] + " | Tipo de Serviço: " + comboio[4])
+                else:
+                    print("Nenhum comboio encontrado.")
+
             
             case "0":
                 print("A encerrar o sistema. Até logo!")
