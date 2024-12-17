@@ -46,40 +46,33 @@ mais limpo e mais fácil de usar.
 Armazena as ligações entre as estações, incluindo o código da estação de origem, o código da estação de destino, a distância e a velocidade máxima permitida. 
 Usado para calcular as viagens possíveis entre as estações.
 
-
-4-estacoes.txt
-Contém a lista das estações registadas, com o código único da estação, nome e localização (latitude e longitude). 
-Usado para verificar e listar as estações no sistema.
-
-
-5-linhas.txt
-Armazena informações sobre as linhas de comboio, incluindo o código da linha, estações de partida e chegada, e estações intermediárias.
-Essencial para registrar as linhas de comboios e determinar as rotas e paragens.
-
-
-6-comboios.txt
+4-comboios.txt
 Contém os dados dos comboios, como número de série, modelo, velocidade máxima e capacidade. 
 Usado para verificar a disponibilidade de comboios e associar a viagens.
 
+5-estacoes.txt
+Contém a lista das estações registadas, com o código único da estação, nome e localização (latitude e longitude). 
+Usado para verificar e listar as estações no sistema.
 
-7-viagens.txt
-Regista as viagens programadas, incluindo o código da viagem, código da linha, número do comboio, data e número de passageiros. 
-Usado para consultar viagens passadas ou futuras.
+6-linhas.txt
+Armazena informações sobre as linhas de comboio, incluindo o código da linha, estações de partida e chegada, e estações intermediárias.
+Essencial para registrar as linhas de comboios e determinar as rotas e paragens.
 
+7-paragens_viagem.txt
+Contém as paragens de cada viagem específica, incluindo o código da viagem, a estação e o horário da paragem. 
+Usado para registrar as paragens programadas para cada viagem e o tempo de espera nas estações.
 
-8-reservas_viagens.txt
-Contém as reservas feitas para as viagens, incluindo código da viagem, número de passageiros e detalhes dos passageiros. 
-Usado para gerir reservas e verificar lugares disponíveis.
-
-
-9-paragens.txt
+8-paragens.txt
 Armazena as paragens das linhas de comboio, incluindo o código da linha e as estações de paragem. 
 Essencial para determinar as estações que o comboio vai atravessar ao longo do percurso.
 
+9-reservas_viagem.txt
+Contém as reservas feitas para as viagens, incluindo código da viagem, número de passageiros e detalhes dos passageiros. 
+Usado para gerir reservas e verificar lugares disponíveis.
 
-10-paragens_viagens.txt
-Contém as paragens de cada viagem específica, incluindo o código da viagem, a estação e o horário da paragem. 
-Usado para registrar as paragens programadas para cada viagem e o tempo de espera nas estações.
+10-viagens.txt
+Regista as viagens programadas, incluindo o código da viagem, código da linha, número do comboio, data e número de passageiros. 
+Usado para consultar viagens passadas ou futuras.
 
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------#
                                                                         FORA DE PASTA ESPECÍFICA
