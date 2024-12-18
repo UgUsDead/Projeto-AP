@@ -7,12 +7,12 @@ Antes de começar a usar o código, é aconselhado que o utilizador abra a sua c
 -pip install qrcode
 -pip install pillow
 
-Para correr o código, deve estar apenas na main.py e correr o código através do mesmo.
+Para iniciar deve estar apenas na main.py e correr o código através do mesmo.
 
 O código é constituído por uma probabilidade de 1 em 10 em que seja possível haver "greve", caso aconteça e queira usar o código, o utilizador deve reiniciar o programa e tentar denovo.
 
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------#
-                                                                               FUNCIONALIDADES
+                                                                    FUNCIONALIDADES (Menu de interação)
 
 
 1-Adicionar Estação
@@ -60,6 +60,9 @@ vão ser listados todos os comboios com o número igual e menor ao que o utiliza
 
 15-Procurar linhas a partir de estação
 Permite procurar as linhas existentes a partir de uma estação fornecida. 
+
+16-Pesquisar viagens por estação de partida ou chegada
+Permite pesquisar, através de uma estação introduzida pelo utilizador seja ela de partida ou chegada, todas as viagens que coincidam com essa estação
 
 0-Sair
 Guess what it does :3 (sai do programa :3)
